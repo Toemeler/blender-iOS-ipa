@@ -97,7 +97,14 @@ jobs:
 
           mkdir -p Payload
           cp -R "$APP" Payload/
-          zip -qry Blender-ios.ipa Payload
+          # Remove dangling symlinks, then zip while DEREFERENCING the rest
+          # (note: no -y flag) so the resulting IPA contains zero symlink
+          # entries. Windows signing tools like Impactor need a special
+          # privilege to create symlinks during extraction and otherwise
+          # fail with "os error 1314 / A required privilege is not held".
+          find Payload -type l ! -exec test -e {} \; -delete || true
+          echo "Symlinks left in Payload: $(find Payload -type l | wc -l | tr -d ' ')"
+          zip -qr Blender-ios.ipa Payload
           ls -lh Blender-ios.ipa
 
       - name: Upload IPA as run artifact
