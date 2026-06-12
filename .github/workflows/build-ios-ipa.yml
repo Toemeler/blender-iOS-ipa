@@ -77,6 +77,12 @@ jobs:
           if [ -z "$APP" ]; then APP=$(find build_ios -type d -name "Blender.app" | head -1); fi
           test -n "$APP" || { echo "Blender.app not found"; exit 1; }
           echo "Found app bundle: $APP"
+          # Strip non-runtime build artifacts: on-device signers (LiveContainer,
+          # SideStore, Impactor) try to sign every Mach-O in the bundle and fail
+          # on object files like python.o. These are linker leftovers, not needed
+          # at runtime, so removing them is safe.
+          echo "Removing *.o / *.a build artifacts:"
+          find "$APP" \( -name "*.o" -o -name "*.a" \) -print -delete || true
 
           # Best-effort fix for a known gap in this branch: dependency dylibs
           # sometimes are not copied into the bundle (blender issue #142345).
