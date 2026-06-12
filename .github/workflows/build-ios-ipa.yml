@@ -84,13 +84,27 @@ jobs:
           echo "Removing *.o / *.a build artifacts:"
           find "$APP" \( -name "*.o" -o -name "*.a" \) -print -delete || true
 
-          # Best-effort fix for a known gap in this branch: dependency dylibs
-          # sometimes are not copied into the bundle (blender issue #142345).
-          DYLIB_COUNT=$(find "$APP" -name '*.dylib' | wc -l | tr -d ' ')
-          if [ "$DYLIB_COUNT" -lt 5 ] && [ -d blender/lib/ios_arm64 ]; then
-            mkdir -p "$APP/Frameworks"
-            find blender/lib/ios_arm64 -path "*/lib/*.dylib" -exec cp -n {} "$APP/Frameworks/" \; || true
+          # Bundle ALL dependency dylibs where the binary's @rpath looks: Assets/lib.
+          # The branch stubs this out for iOS (IOS_FIXME) and only copies libs when
+          # a codesigning identity exists, which it doesn't on a CI runner -- so the
+          # app crashes at launch with "Library not loaded: @rpath/libz.1.dylib".
+          # We copy them ourselves; Impactor re-signs everything on-device anyway.
+          LIBDST="$APP/Assets/lib"
+          mkdir -p "$LIBDST"
+          IOSLIB=""
+          for d in blender/lib/ios_arm64 blender/lib/ios_*; do
+            [ -d "$d" ] && IOSLIB="$d" && break
+          done
+          echo "iOS precompiled lib dir: ${IOSLIB:-NOT_FOUND}"
+          if [ -n "$IOSLIB" ]; then
+            # -L dereferences version symlinks (libz.1.dylib -> libz.1.3.dylib) so the
+            # exact soname the binary requests exists as a real file in the bundle.
+            find "$IOSLIB" -name '*.dylib' \( -type f -o -type l \) -exec cp -fL {} "$LIBDST/" \; || true
           fi
+          # Python's shared lib is dlopened by Blender too; make sure it's reachable.
+          find "$APP" -name 'libpython*.dylib' -exec cp -fn {} "$LIBDST/" \; 2>/dev/null || true
+          echo "dylibs now in Assets/lib: $(find "$LIBDST" -maxdepth 1 -name '*.dylib' | wc -l | tr -d ' ')"
+          echo "libz present: $(ls "$LIBDST"/libz*.dylib 2>/dev/null || echo NO)"
 
           # Ad-hoc signature: Sideloadly/AltStore re-signs with the user's Apple ID.
           codesign --force --deep --sign - "$APP" || true
