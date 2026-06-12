@@ -1,0 +1,142 @@
+# Builds Blender's experimental "ios" branch into a sideloadable (unsigned) IPA.
+# - On success: publishes the IPA as a GitHub Release (and as a run artifact).
+# - On failure: commits a condensed error log to ci-logs/ in this repo,
+#   so the build can be debugged remotely via the GitHub API.
+
+name: Build Blender iOS IPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      extra_cmake_args:
+        description: "Extra CMake args (debugging knob, optional)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  build-ipa:
+    name: Build Blender (ios branch) for iPadOS
+    runs-on: macos-15
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout Blender "ios" branch (upstream GitHub mirror)
+        uses: actions/checkout@v4
+        with:
+          repository: blender/blender
+          ref: ios
+          fetch-depth: 1
+          path: blender
+
+      - name: Toolchain info
+        run: |
+          sw_vers
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+          cmake --version
+          python3 --version
+          git lfs install
+
+      - name: Cache precompiled dependency libraries
+        uses: actions/cache@v4
+        with:
+          path: |
+            blender/lib/ios_arm64
+            blender/lib/macos_arm64
+          key: blender-ios-libs-v1
+
+      - name: Fetch assets + precompiled libraries (iOS + macOS host tools)
+        working-directory: blender
+        run: |
+          set -o pipefail
+          python3 ./build_files/utils/make_update.py --no-blender --use-ios-libraries 2>&1 | tee update.log
+
+      - name: Configure (CMake, Xcode generator, iOS device target)
+        run: |
+          set -o pipefail
+          cmake -S blender -B build_ios -G Xcode \
+            -DAPPLE_TARGET_DEVICE=ios \
+            -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO \
+            -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED=NO \
+            -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY="" \
+            -DCMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM="" \
+            ${{ inputs.extra_cmake_args }} 2>&1 | tee configure.log
+
+      - name: Build and assemble Blender.app
+        run: |
+          set -o pipefail
+          cmake --build build_ios --config Release --target install -- -quiet -jobs 3 2>&1 | tee build.log
+
+      - name: Package IPA
+        run: |
+          set -x
+          APP=$(find build_ios -type d -name "Blender.app" | grep -Ei "iphoneos|Release" | head -1)
+          if [ -z "$APP" ]; then APP=$(find build_ios -type d -name "Blender.app" | head -1); fi
+          test -n "$APP" || { echo "Blender.app not found"; exit 1; }
+          echo "Found app bundle: $APP"
+
+          # Best-effort fix for a known gap in this branch: dependency dylibs
+          # sometimes are not copied into the bundle (blender issue #142345).
+          DYLIB_COUNT=$(find "$APP" -name '*.dylib' | wc -l | tr -d ' ')
+          if [ "$DYLIB_COUNT" -lt 5 ] && [ -d blender/lib/ios_arm64 ]; then
+            mkdir -p "$APP/Frameworks"
+            find blender/lib/ios_arm64 -path "*/lib/*.dylib" -exec cp -n {} "$APP/Frameworks/" \; || true
+          fi
+
+          # Ad-hoc signature: Sideloadly/AltStore re-signs with the user's Apple ID.
+          codesign --force --deep --sign - "$APP" || true
+
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          zip -qry Blender-ios.ipa Payload
+          ls -lh Blender-ios.ipa
+
+      - name: Upload IPA as run artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Blender-ios-ipa
+          path: Blender-ios.ipa
+          if-no-files-found: error
+
+      - name: Publish IPA as a GitHub Release
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "build-${{ github.run_number }}" Blender-ios.ipa \
+            --repo "${{ github.repository }}" \
+            --title "Blender iOS build #${{ github.run_number }}" \
+            --notes "Unsigned IPA built from blender/blender@ios (run ${{ github.run_id }}). Sideload with Sideloadly or AltStore. Free Apple ID = 7-day expiry."
+
+      - name: Commit condensed failure log to repo (remote debugging)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "== RUN ${{ github.run_id }} attempt ${{ github.run_attempt }} on $(sw_vers -productVersion) / $(xcodebuild -version | tr '\n' ' ') =="
+            echo; echo "===== update.log (tail) ====="; tail -n 60 blender/update.log 2>/dev/null
+            echo; echo "===== configure.log (tail) ====="; tail -n 120 configure.log 2>/dev/null
+            echo; echo "===== build.log error lines ====="; grep -inE "error[: ]|fatal error|ld: " build.log 2>/dev/null | tail -n 150
+            echo; echo "===== build.log (tail) ====="; tail -n 200 build.log 2>/dev/null
+            echo; echo "===== CMakeError.log (tail) ====="; tail -n 80 build_ios/CMakeFiles/CMakeError.log 2>/dev/null
+          } > failure-report.txt || true
+          gh api -X PUT "repos/${{ github.repository }}/contents/ci-logs/run-${{ github.run_id }}-a${{ github.run_attempt }}.txt" \
+            -f message="CI failure log (run ${{ github.run_id }})" \
+            -f content="$(base64 -i failure-report.txt | tr -d '\n')" || true
+
+      - name: Upload full debug logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-logs
+          path: |
+            build.log
+            configure.log
+            blender/update.log
+            build_ios/CMakeCache.txt
+            build_ios/CMakeFiles/CMakeError.log
+          if-no-files-found: ignore
