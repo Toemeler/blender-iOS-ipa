@@ -23,13 +23,12 @@ jobs:
     timeout-minutes: 350
 
     steps:
-      - name: Checkout Blender "ios" branch (upstream GitHub mirror)
-        uses: actions/checkout@v4
-        with:
-          repository: blender/blender
-          ref: ios
-          fetch-depth: 1
-          path: blender
+      - name: Clone Blender ios branch from blender.org WITH Git LFS (real datafiles)
+        run: |
+          git lfs install
+          git clone --depth 1 --branch ios https://projects.blender.org/blender/blender.git blender
+          cd blender && git lfs pull
+          echo "startup.blend bytes: $(wc -c < release/datafiles/startup.blend) (must be >100000, not 131)"
 
       - name: Toolchain info
         run: |
@@ -58,15 +57,6 @@ jobs:
         run: |
           echo 'IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwppbXBvcnQgc3lzCgojIC0tLSBQYXRjaCAxOiB3bV9hZGRfZGVmYXVsdCBudWxsLWRlcmVmIChhbGxvY2F0ZSB3bS0+cnVudGltZSBiZWZvcmUgdXNlKSAtLS0KcDEgPSAiYmxlbmRlci9zb3VyY2UvYmxlbmRlci93aW5kb3dtYW5hZ2VyL2ludGVybi93bS5jYyIKcyA9IG9wZW4ocDEpLnJlYWQoKQphbGxvYyAgPSAiICB3bS0+cnVudGltZSA9IE1FTV9uZXc8YmxlbmRlcjo6YmtlOjpXaW5kb3dNYW5hZ2VyUnVudGltZT4oX19mdW5jX18pO1xuIgphbmNob3IgPSAiICBCS0VfcmVwb3J0c19pbml0KCZ3bS0+cnVudGltZS0+cmVwb3J0cywgUlBUX1NUT1JFKTtcbiIKZHVwICAgID0gIiAgd20tPmZpbGVfc2F2ZWQgPSAxO1xuIiArIGFsbG9jICsgIiAgd21fd2luZG93X21ha2VfZHJhd2FibGUod20sIHdpbik7XG4iCmZpeGVkICA9ICIgIHdtLT5maWxlX3NhdmVkID0gMTtcbiAgd21fd2luZG93X21ha2VfZHJhd2FibGUod20sIHdpbik7XG4iCmlmIGFsbG9jICsgYW5jaG9yIGluIHM6CiAgICBwcmludCgid20uY2M6IGFscmVhZHkgcGF0Y2hlZCIpCmVsc2U6CiAgICBpZiBzLmNvdW50KGFuY2hvcikgIT0gMSBvciBzLmNvdW50KGR1cCkgIT0gMToKICAgICAgICBzeXMuc3RkZXJyLndyaXRlKCJ3bS5jYyBFUlJPUiBhbmNob3I9JWQgZHVwPSVkXG4iICUgKHMuY291bnQoYW5jaG9yKSwgcy5jb3VudChkdXApKSk7IHN5cy5leGl0KDEpCiAgICBzID0gcy5yZXBsYWNlKGFuY2hvciwgYWxsb2MgKyBhbmNob3IsIDEpLnJlcGxhY2UoZHVwLCBmaXhlZCwgMSkKICAgIG9wZW4ocDEsICJ3Iikud3JpdGUocykKICAgIHByaW50KCJ3bS5jYzogcGF0Y2hlZCAod20tPnJ1bnRpbWUgYWxsb2NhdGVkIGJlZm9yZSB1c2UpIikKCiMgLS0tIFBhdGNoIDI6IGRpc2FibGUgQmxlbmRlcidzIGNyYXNoL2Fib3J0IGhhbmRsZXJzIChkaWFnbm9zdGljKSBzbyBpT1MKIyBnZW5lcmF0ZXMgYSBjbGVhbiBjcmFzaCByZXBvcnQgdGhhdCBsb2NhbGl6ZXMgdGhlIHJlYWwgZmF1bHQuIC0tLQpwMiA9ICJibGVuZGVyL3NvdXJjZS9jcmVhdG9yL2NyZWF0b3IuY2MiCnMyID0gb3BlbihwMikucmVhZCgpCmEgPSAiICBhcHBfc3RhdGUuc2lnbmFsLnVzZV9jcmFzaF9oYW5kbGVyID0gdHJ1ZTtcbiAgYXBwX3N0YXRlLnNpZ25hbC51c2VfYWJvcnRfaGFuZGxlciA9IHRydWU7XG4iCmIgPSAiICBhcHBfc3RhdGUuc2lnbmFsLnVzZV9jcmFzaF9oYW5kbGVyID0gZmFsc2U7XG4gIGFwcF9zdGF0ZS5zaWduYWwudXNlX2Fib3J0X2hhbmRsZXIgPSBmYWxzZTtcbiIKaWYgYiBpbiBzMjoKICAgIHByaW50KCJjcmVhdG9yLmNjOiBhbHJlYWR5IHBhdGNoZWQiKQplbGlmIHMyLmNvdW50KGEpICE9IDE6CiAgICBzeXMuc3RkZXJyLndyaXRlKCJjcmVhdG9yLmNjIEVSUk9SIGNvdW50PSVkXG4iICUgczIuY291bnQoYSkpOyBzeXMuZXhpdCgxKQplbHNlOgogICAgb3BlbihwMiwgInciKS53cml0ZShzMi5yZXBsYWNlKGEsIGIsIDEpKQogICAgcHJpbnQoImNyZWF0b3IuY2M6IHBhdGNoZWQgKEJsZW5kZXIgY3Jhc2ggaGFuZGxlciBkaXNhYmxlZCBmb3IgY2xlYW4gaU9TIHJlcG9ydCkiKQo=' | base64 -d > /tmp/fix_all.py
           python3 /tmp/fix_all.py
-
-      - name: Select older iOS SDK (match community's working iPadOS 18-era toolchain)
-        run: |
-          echo 'Installed Xcodes:'; ls -d /Applications/Xcode*.app 2>/dev/null || true
-          XC=$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1)
-          [ -z "$XC" ] && XC=$(ls -d /Applications/Xcode_15*.app 2>/dev/null | sort -V | tail -1)
-          if [ -n "$XC" ]; then echo "Selecting older Xcode: $XC"; sudo xcode-select -s "$XC/Contents/Developer"; else echo 'No older Xcode found; using default'; fi
-          xcodebuild -version
-          echo "iOS SDK in use: $(xcrun --sdk iphoneos --show-sdk-version)"
 
       - name: Configure (CMake, Xcode generator, iOS device target)
         run: |
