@@ -22,7 +22,6 @@ This repository is an automated pipeline that compiles Blender's experimental `i
 - A Windows / macOS / Linux PC for sideloading.
 - A free or paid Apple ID.
 - A sideloading tool: **Sideloadly**, **AltStore / SideStore**, or **Impactor**.
-  (The old *Cydia* Impactor is defunct — use one of these instead.)
 
 ## Install (sideload)
 
