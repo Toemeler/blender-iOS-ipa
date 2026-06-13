@@ -54,6 +54,11 @@ jobs:
           set -o pipefail
           python3 ./build_files/utils/make_update.py --no-blender --use-ios-libraries 2>&1 | tee update.log
 
+      - name: Patch wm_add_default (allocate wm->runtime before use; fixes 0x40 null deref)
+        run: |
+          echo 'IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIEZpeCBhIG51bGwtcG9pbnRlciBjcmFzaCBpbiB3bV9hZGRfZGVmYXVsdDogd20tPnJ1bnRpbWUgaXMgZGVyZWZlcmVuY2VkCiMgKEJLRV9yZXBvcnRzX2luaXQoJndtLT5ydW50aW1lLT5yZXBvcnRzLCAuLi4pIGFuZCB3bS0+cnVudGltZS0+d2luYWN0aXZlKQojIEJFRk9SRSBpdCBpcyBhbGxvY2F0ZWQuIE1vdmUgdGhlIGFsbG9jYXRpb24gdG8gYmVmb3JlIGZpcnN0IHVzZSBhbmQgZHJvcAojIHRoZSBtaXNwbGFjZWQgbGF0ZSBhbGxvY2F0aW9uLiBDcmFzaCBzaWduYXR1cmU6IEVYQ19CQURfQUNDRVNTIGF0IDB4NDAuCmltcG9ydCBzeXMKcCA9ICJibGVuZGVyL3NvdXJjZS9ibGVuZGVyL3dpbmRvd21hbmFnZXIvaW50ZXJuL3dtLmNjIgpzID0gb3BlbihwKS5yZWFkKCkKYWxsb2MgID0gIiAgd20tPnJ1bnRpbWUgPSBNRU1fbmV3PGJsZW5kZXI6OmJrZTo6V2luZG93TWFuYWdlclJ1bnRpbWU+KF9fZnVuY19fKTtcbiIKYW5jaG9yID0gIiAgQktFX3JlcG9ydHNfaW5pdCgmd20tPnJ1bnRpbWUtPnJlcG9ydHMsIFJQVF9TVE9SRSk7XG4iCmR1cCAgICA9ICIgIHdtLT5maWxlX3NhdmVkID0gMTtcbiIgKyBhbGxvYyArICIgIHdtX3dpbmRvd19tYWtlX2RyYXdhYmxlKHdtLCB3aW4pO1xuIgpmaXhlZCAgPSAiICB3bS0+ZmlsZV9zYXZlZCA9IDE7XG4gIHdtX3dpbmRvd19tYWtlX2RyYXdhYmxlKHdtLCB3aW4pO1xuIgppZiBhbGxvYyArIGFuY2hvciBpbiBzOgogICAgcHJpbnQoImFscmVhZHkgcGF0Y2hlZCIpOyBzeXMuZXhpdCgwKQppZiBzLmNvdW50KGFuY2hvcikgIT0gMSBvciBzLmNvdW50KGR1cCkgIT0gMToKICAgIHN5cy5zdGRlcnIud3JpdGUoIkVSUk9SIG1hdGNoaW5nOiBhbmNob3I9JWQgZHVwPSVkXG4iICUgKHMuY291bnQoYW5jaG9yKSwgcy5jb3VudChkdXApKSkKICAgIHN5cy5leGl0KDEpCnMgPSBzLnJlcGxhY2UoYW5jaG9yLCBhbGxvYyArIGFuY2hvciwgMSkKcyA9IHMucmVwbGFjZShkdXAsIGZpeGVkLCAxKQpvcGVuKHAsICJ3Iikud3JpdGUocykKcHJpbnQoInBhdGNoZWQgd21fYWRkX2RlZmF1bHQgT0s6IHdtLT5ydW50aW1lIGFsbG9jYXRlZCBiZWZvcmUgdXNlIikK' | base64 -d > /tmp/fix_wm.py
+          python3 /tmp/fix_wm.py
+
       - name: Configure (CMake, Xcode generator, iOS device target)
         run: |
           set -o pipefail
