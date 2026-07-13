@@ -1,0 +1,389 @@
+== RUN 29292314199 attempt 1 on 15.7.7 / Xcode 16.4 Build version 16F6  ==
+
+===== update.log (tail) =====
+git lfs install --skip-repo
+Git LFS initialized.
+
+Configuring Precompiled Libraries
+=================================
+
+Detected platform     : macos
+Detected architecture : arm64
+
+* Enabling precompiled libraries at lib/macos_arm64
+* Enabling precompiled libraries at lib/ios_arm64
+
+Updating Libraries
+==================
+
+* Skipping lib/linux_x64
+* Updating lib/macos_arm64 ...
+GIT_LFS_SKIP_SMUDGE=1 git submodule update --init --progress lib/macos_arm64
+Submodule 'lib/macos_arm64' (https://projects.blender.org/blender/lib-macos_arm64.git) registered for path 'lib/macos_arm64'
+fatal: could not get a repository handle for submodule 'lib/macos_arm64'
+* Skipping lib/windows_x64
+* Skipping lib/windows_arm64
+* Updating lib/ios_arm64 ...
+GIT_LFS_SKIP_SMUDGE=1 git submodule update --init --progress lib/ios_arm64
+Submodule 'lib/ios_arm64' (https://projects.blender.org/blender/lib-ios_arm64.git) registered for path 'lib/ios_arm64'
+fatal: could not get a repository handle for submodule 'lib/ios_arm64'
+
+Update finished with the following messages
+===========================================
+
+Error updating Git submodule lib/macos_arm64
+Error updating Git submodule lib/ios_arm64
+
+===== configure.log (tail) =====
+-- Performing Test CXX_WARN_NO_UNDEF
+-- Performing Test CXX_WARN_NO_UNDEF - Success
+-- Performing Test CXX_WARN_NO_UNDEF_PREFIX
+-- Performing Test CXX_WARN_NO_UNDEF_PREFIX - Success
+-- Performing Test CXX_WARN_NO_INCONSISTENT_MISSING_OVERRIDE
+-- Performing Test CXX_WARN_NO_INCONSISTENT_MISSING_OVERRIDE - Success
+-- numpy found at '/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/python/lib/python3.11/site-packages'
+-- numpy include files found at '/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/python/lib/python3.11/site-packages/numpy/core/include'
+-- Performing Test C_MACRO_PREFIX_MAP
+-- Performing Test C_MACRO_PREFIX_MAP - Success
+-- Performing Test CXX_MACRO_PREFIX_MAP
+-- Performing Test CXX_MACRO_PREFIX_MAP - Success
+-- Configure Ghost for Apple Cross platform: iOS
+-- Performing Test _has_no_error_unused_macros
+-- Performing Test _has_no_error_unused_macros - Success
+-- Performing Test _has_cxxflag_float_conversion
+-- Performing Test _has_cxxflag_float_conversion - Success
+-- Performing Test _has_cxxflag_double_promotion
+-- Performing Test _has_cxxflag_double_promotion - Success
+-- Finding Python Module File: certifi/cacert.pem
+-- Tests: Using Python executable: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/macos_arm64/python/bin/python3.11
+-- Tests: Disabling render tests, missing oiiotool
+-- -- CONFIGURING IOS PLIST -- 
+-- IOS_FIXME: PLATFORM_BUNDLED_LIBRARIES=/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.1.3.1.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.1.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/usd/lib/libusd_ms.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/materialx/lib/libMaterialX.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libIex.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libIlmThread.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXR.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXRCore.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXRUtil.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/imath/lib/libImath.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimageio/lib/libOpenImageIO.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimageio/lib/libOpenImageIO_Util.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/opencolorio/lib/libOpenColorIO.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openvdb/lib/libopenvdb.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslcomp.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslexec.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslnoise.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslquery.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise_core.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise_device_cpu.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbb.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbbmalloc.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbbmalloc_proxy.dylib
+-- C Compiler:   "AppleClang"
+-- C++ Compiler: "AppleClang"
+-- 
+Blender Configuration
+=====================
+
+  Build Options:
+  - WITH_ALEMBIC                    ON
+  - WITH_BULLET                     ON
+  - WITH_CLANG                      OFF
+  - WITH_CYCLES                     ON
+  - WITH_FFTW3                      ON
+  - WITH_FREESTYLE                  ON
+  - WITH_GMP                        ON
+  - WITH_HARU                       ON
+  - WITH_IK_ITASC                   ON
+  - WITH_IK_SOLVER                  ON
+  - WITH_INPUT_NDOF                 OFF
+  - WITH_INPUT_IME                  ON
+  - WITH_INTERNATIONAL              ON
+  - WITH_MANIFOLD                   ON
+  - WITH_OPENCOLORIO                ON
+  - WITH_OPENIMAGEDENOISE           ON
+  - WITH_OPENSUBDIV                 ON
+  - WITH_OPENVDB                    ON
+  - WITH_POTRACE                    ON
+  - WITH_PUGIXML                    ON
+  - WITH_QUADRIFLOW                 ON
+  - WITH_TBB                        ON
+  - WITH_USD                        OFF
+  - WITH_MATERIALX                  ON
+  - WITH_XR_OPENXR                  OFF
+
+  Compiler Options:
+  - WITH_BUILDINFO                  ON
+  - WITH_OPTIMIZED_BUILD_TOOLS      ON
+
+  System Options:
+  - WITH_INSTALL_PORTABLE           
+  - WITH_MEM_JEMALLOC               ON
+  - WITH_MEM_VALGRIND               OFF
+
+  GHOST Options:
+  - WITH_GHOST_DEBUG                OFF
+  - WITH_GHOST_SDL                  OFF
+
+  Image Formats:
+  - WITH_IMAGE_CINEON               ON
+  - WITH_IMAGE_OPENEXR              ON
+  - WITH_IMAGE_OPENJPEG             ON
+
+  Audio:
+  - WITH_AUDASPACE                  OFF
+  - WITH_CODEC_FFMPEG               ON
+  - WITH_CODEC_SNDFILE              ON
+  - WITH_COREAUDIO                  ON
+  - WITH_JACK                       OFF
+  - WITH_JACK_DYNLOAD               OFF
+  - WITH_OPENAL                     ON
+  - WITH_PULSEAUDIO                 OFF
+  - WITH_PULSEAUDIO_DYNLOAD         
+  - WITH_SDL                        OFF
+  - WITH_WASAPI                     OFF
+
+  Compression:
+  - WITH_LZMA                       ON
+  - WITH_LZO                        ON
+
+  Python:
+  - WITH_PYTHON_INSTALL             ON
+  - WITH_PYTHON_INSTALL_NUMPY       ON
+  - WITH_PYTHON_INSTALL_ZSTANDARD   OFF
+  - WITH_PYTHON_MODULE              OFF
+  - WITH_PYTHON_SAFETY              OFF
+
+  Modifiers:
+  - WITH_MOD_FLUID                  ON
+  - WITH_MOD_OCEANSIM               ON
+  - WITH_MOD_REMESH                 ON
+
+  Rendering:
+  - WITH_HYDRA                      OFF
+
+  Rendering (Cycles):
+  - WITH_CYCLES_OSL                 OFF
+  - WITH_CYCLES_EMBREE              ON
+  - WITH_CYCLES_PATH_GUIDING        ON
+
+  Apple Platform Configuration Options:
+  - APPLE_TARGET_DEVICE             ios
+  - WITH_APPLE_CROSSPLATFORM        ON
+
+  
+-- Configuring done (143.7s)
+-- Generating done (6.4s)
+-- Build files have been written to: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios
+
+===== build.log error lines =====
+1000:ld: warning: reducing alignment of section __DATA,__common from 0x8000 to 0x4000 because it exceeds segment maximum alignment
+2034:error: The specified item could not be found in the keychain.
+2036:error: The specified item could not be found in the keychain.
+2038:error: The specified item could not be found in the keychain.
+2040:error: The specified item could not be found in the keychain.
+2042:error: The specified item could not be found in the keychain.
+2044:error: The specified item could not be found in the keychain.
+2046:error: The specified item could not be found in the keychain.
+2048:error: The specified item could not be found in the keychain.
+2050:error: The specified item could not be found in the keychain.
+2052:error: The specified item could not be found in the keychain.
+2054:error: The specified item could not be found in the keychain.
+2056:error: The specified item could not be found in the keychain.
+2058:error: The specified item could not be found in the keychain.
+2060:error: The specified item could not be found in the keychain.
+2062:error: The specified item could not be found in the keychain.
+2064:error: The specified item could not be found in the keychain.
+2066:error: The specified item could not be found in the keychain.
+2068:error: The specified item could not be found in the keychain.
+2070:error: The specified item could not be found in the keychain.
+2072:error: The specified item could not be found in the keychain.
+2074:error: The specified item could not be found in the keychain.
+2076:error: The specified item could not be found in the keychain.
+2078:error: The specified item could not be found in the keychain.
+2080:error: The specified item could not be found in the keychain.
+2082:error: The specified item could not be found in the keychain.
+
+===== build.log (tail) =====
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/targets/genmdl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/genglsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/genglsl/nprlib_genglsl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/genmdl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/genmdl/nprlib_genmdl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/nprlib_ng.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/genosl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/genosl/nprlib_genosl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/nprlib_defs.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/genmsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/nprlib/genmsl/nprlib_genmsl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/README.md
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/cmlib
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/cmlib/cmlib_defs.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/cmlib/cmlib_ng.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_worleynoise2d_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_fractal3d_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_normalmap.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_image_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_fractal3d_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_unpremult_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_noise2d_vector4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_ramplr_vector4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_transformmatrix_vector2M3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_splittb_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_luminance_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_rgbtohsv_color3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_splitlr_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_worleynoise3d_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_splitlr_vector4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_worleynoise2d_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_fractal3d_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_dodge_color3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_rgbtohsv_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_luminance_color3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_ramplr_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_noise2d_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_creatematrix_vector4_matrix44.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_dodge_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_splitlr_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_cellnoise3d_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_splitlr_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_creatematrix_vector3_matrix33.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_noise2d_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_fractal3d_vector4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_creatematrix_vector3_matrix44.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_burn_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_ramplr_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_noise2d_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_image_color3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_splittb_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_worleynoise2d_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_image_vector4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_ramptb_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_noise3d_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_ramptb_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_ramplr_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/stdlib_genglsl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_ramptb_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_hsvtorgb_color3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_noise3d_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_smoothstep_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/lib
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/lib/mx_transform_uv_vflip.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/lib/mx_sampling.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/lib/mx_noise.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/lib/mx_transform_uv.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/lib/mx_math.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/lib/mx_hsv.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_dodge_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_burn_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_splittb_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_image_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_hsvtorgb_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_ramptb_vector4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_aastep.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_worleynoise3d_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_burn_color3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_noise3d_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_rotate_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_image_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_cellnoise2d_float.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_rotate_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_splittb_vector4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_worleynoise3d_vector2.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_transformmatrix_vector3M4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_mix_surfaceshader.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_disjointover_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_premult_color4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_noise3d_vector4.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genglsl/mx_image_vector3.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/stdlib_ng.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmdl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmdl/stdlib_genmdl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_vector4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_burn_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_rgbtohsv_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_image_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_luminance_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_premult_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_hsvtorgb_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_rgbtohsv_color3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_image_color3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_vector2.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_heighttonormal_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_hsvtorgb_color3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_luminance_color3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_noise2d_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_cellnoise3d_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_time_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/include
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/include/vector2.h
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/include/matrix33.h
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/include/color4.h
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/include/vector4.h
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/include/mx_funcs.h
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/stdlib_genosl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_dodge_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_color3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_dodge_color3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_worleynoise3d_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_image_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_surface_unlit.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_normalmap.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_disjointover_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geomcolor_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_fractal3d_vector4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_frame_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_burn_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_fractal3d_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_mix_surfaceshader.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_burn_color3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_fractal3d_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/lib
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/lib/mx_transform_uv_vflip.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/lib/mx_transform_uv.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/lib/mx_sampling.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_fractal3d_vector2.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geomcolor_color3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_creatematrix.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_image_vector4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_worleynoise2d_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_worleynoise2d_vector2.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_boolean.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_string.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_transformmatrix_vector2M3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geompropvalue_integer.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_worleynoise2d_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_noise2d_vector2.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_noise2d_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_noise3d_vector4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_image_vector2.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_worleynoise3d_vector2.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_dodge_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_worleynoise3d_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_noise3d_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_image_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_cellnoise2d_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_unpremult_color4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_rotate_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_noise3d_vector3.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_noise2d_vector4.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_geomcolor_float.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_noise3d_vector2.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genosl/mx_rotate_vector2.osl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/stdlib_defs.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmsl/stdlib_genmsl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmsl/lib
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmsl/lib/mx_sampling.metal
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmsl/lib/mx_matscalaroperators.metal
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmsl/lib/mx_math.metal
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/stdlib/genmsl/lib/mx_texture.metal
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genglsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genglsl/mx_directional_light.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genglsl/mx_point_light.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genglsl/mx_spot_light.glsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genglsl/lights_genglsl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/lights_defs.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genmsl
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genmsl/mx_spot_light.metal
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genmsl/mx_point_light.metal
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genmsl/lights_genmsl_impl.mtlx
+-- Installing: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios/bin/Release/Blender.app/Assets/lib/materialx/libraries/lights/genmsl/mx_directional_light.metal
+Command PhaseScriptExecution emitted errors but did not return a nonzero exit code to indicate failure
+note: Run script build phase 'Generate source/creator/CMakeFiles/locales' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'locales' from project 'Blender')
+note: Run script build phase 'CMake PostBuild Rules' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'install' from project 'Blender')
+note: Run script build phase 'Generate source/creator/buildinfo.h' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'buildinfo' from project 'Blender')
+note: Run script build phase 'Generate source/creator/CMakeFiles/buildinfo' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'buildinfo' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/blender_cross_tools_compile' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'blender_cross_tools_compile' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/ZERO_CHECK' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'ZERO_CHECK' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/ALL_BUILD' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'ALL_BUILD' from project 'Blender')
+
+===== CMakeError.log (tail) =====
