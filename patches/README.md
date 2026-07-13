@@ -10,3 +10,10 @@ They are the human-readable form of the modifications that produce the released 
     allow indirect-pointer (trackpad) touches for click/drag, enable trackpad scroll navigation,
     and log input events to `blender_input.log`.
 - **`mkicon.py`** — render the Blender logo onto a charcoal background and install it as the app icon.
+- **`fix_all_v23.py`** — everything in v22, plus Bluetooth-mouse fixes:
+  - mouse **scroll wheel** now works: wheel notches arrive as near-instant Began->Ended scroll
+    events whose delta was being swallowed by the translation cache (and each notch fired a
+    phantom left click); the 0-touch scroll path now emits pure scroll with the full delta.
+  - **area-edge resizing** is pixel-exact: pointer clicks are delivered from raw
+    touchesBegan/Moved/Ended (no ~10 pt pan-recognizer hysteresis), and the UIPointerInteraction
+    uses a per-location micro-region so the resize arrows stay in sync with the real hot zone.
