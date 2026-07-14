@@ -1,0 +1,365 @@
+== RUN 29328470966 attempt 1 on 15.7.7 / Xcode 16.4 Build version 16F6  ==
+
+===== update.log (tail) =====
+git lfs install --skip-repo
+Git LFS initialized.
+
+Configuring Precompiled Libraries
+=================================
+
+Detected platform     : macos
+Detected architecture : arm64
+
+* Enabling precompiled libraries at lib/macos_arm64
+* Enabling precompiled libraries at lib/ios_arm64
+
+Updating Libraries
+==================
+
+* Skipping lib/linux_x64
+* Updating lib/macos_arm64 ...
+GIT_LFS_SKIP_SMUDGE=1 git submodule update --init --progress lib/macos_arm64
+Submodule 'lib/macos_arm64' (https://projects.blender.org/blender/lib-macos_arm64.git) registered for path 'lib/macos_arm64'
+fatal: could not get a repository handle for submodule 'lib/macos_arm64'
+* Skipping lib/windows_x64
+* Skipping lib/windows_arm64
+* Updating lib/ios_arm64 ...
+GIT_LFS_SKIP_SMUDGE=1 git submodule update --init --progress lib/ios_arm64
+Submodule 'lib/ios_arm64' (https://projects.blender.org/blender/lib-ios_arm64.git) registered for path 'lib/ios_arm64'
+fatal: could not get a repository handle for submodule 'lib/ios_arm64'
+
+Update finished with the following messages
+===========================================
+
+Error updating Git submodule lib/macos_arm64
+Error updating Git submodule lib/ios_arm64
+
+===== configure.log (tail) =====
+-- Performing Test CXX_WARN_NO_UNDEF
+-- Performing Test CXX_WARN_NO_UNDEF - Success
+-- Performing Test CXX_WARN_NO_UNDEF_PREFIX
+-- Performing Test CXX_WARN_NO_UNDEF_PREFIX - Success
+-- Performing Test CXX_WARN_NO_INCONSISTENT_MISSING_OVERRIDE
+-- Performing Test CXX_WARN_NO_INCONSISTENT_MISSING_OVERRIDE - Success
+-- numpy found at '/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/python/lib/python3.11/site-packages'
+-- numpy include files found at '/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/python/lib/python3.11/site-packages/numpy/core/include'
+-- Performing Test C_MACRO_PREFIX_MAP
+-- Performing Test C_MACRO_PREFIX_MAP - Success
+-- Performing Test CXX_MACRO_PREFIX_MAP
+-- Performing Test CXX_MACRO_PREFIX_MAP - Success
+-- Configure Ghost for Apple Cross platform: iOS
+-- Performing Test _has_no_error_unused_macros
+-- Performing Test _has_no_error_unused_macros - Success
+-- Performing Test _has_cxxflag_float_conversion
+-- Performing Test _has_cxxflag_float_conversion - Success
+-- Performing Test _has_cxxflag_double_promotion
+-- Performing Test _has_cxxflag_double_promotion - Success
+-- Finding Python Module File: certifi/cacert.pem
+-- Tests: Using Python executable: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/macos_arm64/python/bin/python3.11
+-- Tests: Disabling render tests, missing oiiotool
+-- -- CONFIGURING IOS PLIST -- 
+-- IOS_FIXME: PLATFORM_BUNDLED_LIBRARIES=/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.1.3.1.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.1.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/usd/lib/libusd_ms.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/materialx/lib/libMaterialX.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libIex.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libIlmThread.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXR.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXRCore.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXRUtil.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/imath/lib/libImath.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimageio/lib/libOpenImageIO.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimageio/lib/libOpenImageIO_Util.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/opencolorio/lib/libOpenColorIO.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openvdb/lib/libopenvdb.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslcomp.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslexec.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslnoise.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslquery.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise_core.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise_device_cpu.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbb.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbbmalloc.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbbmalloc_proxy.dylib
+-- C Compiler:   "AppleClang"
+-- C++ Compiler: "AppleClang"
+-- 
+Blender Configuration
+=====================
+
+  Build Options:
+  - WITH_ALEMBIC                    ON
+  - WITH_BULLET                     ON
+  - WITH_CLANG                      OFF
+  - WITH_CYCLES                     ON
+  - WITH_FFTW3                      ON
+  - WITH_FREESTYLE                  ON
+  - WITH_GMP                        ON
+  - WITH_HARU                       ON
+  - WITH_IK_ITASC                   ON
+  - WITH_IK_SOLVER                  ON
+  - WITH_INPUT_NDOF                 OFF
+  - WITH_INPUT_IME                  ON
+  - WITH_INTERNATIONAL              ON
+  - WITH_MANIFOLD                   ON
+  - WITH_OPENCOLORIO                ON
+  - WITH_OPENIMAGEDENOISE           ON
+  - WITH_OPENSUBDIV                 ON
+  - WITH_OPENVDB                    ON
+  - WITH_POTRACE                    ON
+  - WITH_PUGIXML                    ON
+  - WITH_QUADRIFLOW                 ON
+  - WITH_TBB                        ON
+  - WITH_USD                        OFF
+  - WITH_MATERIALX                  ON
+  - WITH_XR_OPENXR                  OFF
+
+  Compiler Options:
+  - WITH_BUILDINFO                  ON
+  - WITH_OPTIMIZED_BUILD_TOOLS      ON
+
+  System Options:
+  - WITH_INSTALL_PORTABLE           
+  - WITH_MEM_JEMALLOC               ON
+  - WITH_MEM_VALGRIND               OFF
+
+  GHOST Options:
+  - WITH_GHOST_DEBUG                OFF
+  - WITH_GHOST_SDL                  OFF
+
+  Image Formats:
+  - WITH_IMAGE_CINEON               ON
+  - WITH_IMAGE_OPENEXR              ON
+  - WITH_IMAGE_OPENJPEG             ON
+
+  Audio:
+  - WITH_AUDASPACE                  OFF
+  - WITH_CODEC_FFMPEG               ON
+  - WITH_CODEC_SNDFILE              ON
+  - WITH_COREAUDIO                  ON
+  - WITH_JACK                       OFF
+  - WITH_JACK_DYNLOAD               OFF
+  - WITH_OPENAL                     ON
+  - WITH_PULSEAUDIO                 OFF
+  - WITH_PULSEAUDIO_DYNLOAD         
+  - WITH_SDL                        OFF
+  - WITH_WASAPI                     OFF
+
+  Compression:
+  - WITH_LZMA                       ON
+  - WITH_LZO                        ON
+
+  Python:
+  - WITH_PYTHON_INSTALL             ON
+  - WITH_PYTHON_INSTALL_NUMPY       ON
+  - WITH_PYTHON_INSTALL_ZSTANDARD   OFF
+  - WITH_PYTHON_MODULE              OFF
+  - WITH_PYTHON_SAFETY              OFF
+
+  Modifiers:
+  - WITH_MOD_FLUID                  ON
+  - WITH_MOD_OCEANSIM               ON
+  - WITH_MOD_REMESH                 ON
+
+  Rendering:
+  - WITH_HYDRA                      OFF
+
+  Rendering (Cycles):
+  - WITH_CYCLES_OSL                 OFF
+  - WITH_CYCLES_EMBREE              ON
+  - WITH_CYCLES_PATH_GUIDING        ON
+
+  Apple Platform Configuration Options:
+  - APPLE_TARGET_DEVICE             ios
+  - WITH_APPLE_CROSSPLATFORM        ON
+
+  
+-- Configuring done (179.6s)
+-- Generating done (4.5s)
+-- Build files have been written to: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios
+
+===== build.log error lines =====
+452:/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:654:30: error: property 'allowedMovement' not found on object of type 'UILongPressGestureRecognizer *'; did you mean 'allowableMovement'?
+473:45 warnings and 1 error generated.
+
+===== build.log (tail) =====
+  244 |   const char *getKeyboardInput(GHOST_IWindow *window) override;
+      |              ^
+      |                _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:244:14: note: insert '_Nonnull' if the pointer should never be null
+  244 |   const char *getKeyboardInput(GHOST_IWindow *window) override;
+      |              ^
+      |                _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:246:59: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  246 |   GHOST_TSuccess startSecurityScopedFileAccess(const char *filepath);
+      |                                                           ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:246:59: note: insert '_Nullable' if the pointer may be null
+  246 |   GHOST_TSuccess startSecurityScopedFileAccess(const char *filepath);
+      |                                                           ^
+      |                                                             _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:246:59: note: insert '_Nonnull' if the pointer should never be null
+  246 |   GHOST_TSuccess startSecurityScopedFileAccess(const char *filepath);
+      |                                                           ^
+      |                                                             _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:247:58: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  247 |   GHOST_TSuccess stopSecurityScopedFileAccess(const char *filepath);
+      |                                                          ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:247:58: note: insert '_Nullable' if the pointer may be null
+  247 |   GHOST_TSuccess stopSecurityScopedFileAccess(const char *filepath);
+      |                                                          ^
+      |                                                            _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:247:58: note: insert '_Nonnull' if the pointer should never be null
+  247 |   GHOST_TSuccess stopSecurityScopedFileAccess(const char *filepath);
+      |                                                          ^
+      |                                                            _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:250:50: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  250 |   void iosPresentFilePicker(int mode, const char *suggested_name) override;
+      |                                                  ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:250:50: note: insert '_Nullable' if the pointer may be null
+  250 |   void iosPresentFilePicker(int mode, const char *suggested_name) override;
+      |                                                  ^
+      |                                                    _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:250:50: note: insert '_Nonnull' if the pointer should never be null
+  250 |   void iosPresentFilePicker(int mode, const char *suggested_name) override;
+      |                                                  ^
+      |                                                    _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:251:55: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  251 |   void iosSetFilePickerCallback(void (*cb)(const char *)) override;
+      |                                                       ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:251:55: note: insert '_Nullable' if the pointer may be null
+  251 |   void iosSetFilePickerCallback(void (*cb)(const char *)) override;
+      |                                                       ^
+      |                                                        _Nullable
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:251:55: note: insert '_Nonnull' if the pointer should never be null
+  251 |   void iosSetFilePickerCallback(void (*cb)(const char *)) override;
+      |                                                       ^
+      |                                                        _Nonnull
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:251:39: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  251 |   void iosSetFilePickerCallback(void (*cb)(const char *)) override;
+      |                                       ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:251:39: note: insert '_Nullable' if the pointer may be null
+  251 |   void iosSetFilePickerCallback(void (*cb)(const char *)) override;
+      |                                       ^
+      |                                         _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:251:39: note: insert '_Nonnull' if the pointer should never be null
+  251 |   void iosSetFilePickerCallback(void (*cb)(const char *)) override;
+      |                                       ^
+      |                                         _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:252:8: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  252 |   void *ios_picker_delegate_ = nullptr;
+      |        ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:252:8: note: insert '_Nullable' if the pointer may be null
+  252 |   void *ios_picker_delegate_ = nullptr;
+      |        ^
+      |          _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:252:8: note: insert '_Nonnull' if the pointer should never be null
+  252 |   void *ios_picker_delegate_ = nullptr;
+      |        ^
+      |          _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:253:8: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  253 |   void *ios_scoped_urls_ = nullptr;
+      |        ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:253:8: note: insert '_Nullable' if the pointer may be null
+  253 |   void *ios_scoped_urls_ = nullptr;
+      |        ^
+      |          _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:253:8: note: insert '_Nonnull' if the pointer should never be null
+  253 |   void *ios_scoped_urls_ = nullptr;
+      |        ^
+      |          _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:254:8: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  254 |   void *ios_pending_save_name_ = nullptr;
+      |        ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:254:8: note: insert '_Nullable' if the pointer may be null
+  254 |   void *ios_pending_save_name_ = nullptr;
+      |        ^
+      |          _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:254:8: note: insert '_Nonnull' if the pointer should never be null
+  254 |   void *ios_pending_save_name_ = nullptr;
+      |        ^
+      |          _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:255:42: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  255 |   void (*ios_file_picker_cb_)(const char *) = nullptr;
+      |                                          ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:255:42: note: insert '_Nullable' if the pointer may be null
+  255 |   void (*ios_file_picker_cb_)(const char *) = nullptr;
+      |                                          ^
+      |                                           _Nullable
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:255:42: note: insert '_Nonnull' if the pointer should never be null
+  255 |   void (*ios_file_picker_cb_)(const char *) = nullptr;
+      |                                          ^
+      |                                           _Nonnull
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:255:9: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  255 |   void (*ios_file_picker_cb_)(const char *) = nullptr;
+      |         ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:255:9: note: insert '_Nullable' if the pointer may be null
+  255 |   void (*ios_file_picker_cb_)(const char *) = nullptr;
+      |         ^
+      |           _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:255:9: note: insert '_Nonnull' if the pointer should never be null
+  255 |   void (*ios_file_picker_cb_)(const char *) = nullptr;
+      |         ^
+      |           _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:264:80: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  264 |   GHOST_TSuccess handleWindowEvent(GHOST_TEventType eventType, GHOST_WindowIOS *window);
+      |                                                                                ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:264:80: note: insert '_Nullable' if the pointer may be null
+  264 |   GHOST_TSuccess handleWindowEvent(GHOST_TEventType eventType, GHOST_WindowIOS *window);
+      |                                                                                ^
+      |                                                                                  _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:264:80: note: insert '_Nonnull' if the pointer should never be null
+  264 |   GHOST_TSuccess handleWindowEvent(GHOST_TEventType eventType, GHOST_WindowIOS *window);
+      |                                                                                ^
+      |                                                                                  _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:320:19: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  320 |   GHOST_WindowIOS *current_active_window_ = nullptr;
+      |                   ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:320:19: note: insert '_Nullable' if the pointer may be null
+  320 |   GHOST_WindowIOS *current_active_window_ = nullptr;
+      |                   ^
+      |                     _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:320:19: note: insert '_Nonnull' if the pointer should never be null
+  320 |   GHOST_WindowIOS *current_active_window_ = nullptr;
+      |                   ^
+      |                     _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:321:19: warning: pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified) [-Wnullability-completeness]
+  321 |   GHOST_WindowIOS *next_active_window_ = nullptr;
+      |                   ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:321:19: note: insert '_Nullable' if the pointer may be null
+  321 |   GHOST_WindowIOS *next_active_window_ = nullptr;
+      |                   ^
+      |                     _Nullable 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:321:19: note: insert '_Nonnull' if the pointer should never be null
+  321 |   GHOST_WindowIOS *next_active_window_ = nullptr;
+      |                   ^
+      |                     _Nonnull 
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:246:18: warning: 'startSecurityScopedFileAccess' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+  246 |   GHOST_TSuccess startSecurityScopedFileAccess(const char *filepath);
+      |                  ^
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:8:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:18:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_System.hh:12:
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/GHOST_ISystem.hh:475:26: note: overridden virtual function is here
+  475 |   virtual GHOST_TSuccess startSecurityScopedFileAccess(const char *filepath) = 0;
+      |                          ^
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:8:
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:247:18: warning: 'stopSecurityScopedFileAccess' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+  247 |   GHOST_TSuccess stopSecurityScopedFileAccess(const char *filepath);
+      |                  ^
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:8:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:18:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_System.hh:12:
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/GHOST_ISystem.hh:476:26: note: overridden virtual function is here
+  476 |   virtual GHOST_TSuccess stopSecurityScopedFileAccess(const char *filepath) = 0;
+      |                          ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:654:30: error: property 'allowedMovement' not found on object of type 'UILongPressGestureRecognizer *'; did you mean 'allowableMovement'?
+  654 |     pointer_press_recognizer.allowedMovement = CGFLOAT_MAX;
+      |                              ^~~~~~~~~~~~~~~
+      |                              allowableMovement
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:8:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_SystemIOS.hh:26:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/MetalKit.framework/Headers/MTKView.h:11:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h:9:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKitCore.h:127:
+/Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UILongPressGestureRecognizer.h:28:31: note: 'allowableMovement' declared here
+   28 | @property (nonatomic) CGFloat allowableMovement;           // Default is 10. Maximum movement in pixels allowed before the gesture fails. Once recognized (after minimumPressDuration) there is no limit on finger movement for the remainder of the touch tracking
+      |                               ^
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:1035:10: warning: unused variable 'viewSize' [-Wunused-variable]
+ 1035 |   CGSize viewSize = view.bounds.size;
+      |          ^~~~~~~~
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:1766:29: warning: unused variable 'app_delegate' [-Wunused-variable]
+ 1766 |   id<UIApplicationDelegate> app_delegate = [app delegate];
+      |                             ^~~~~~~~~~~~
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/ghost/intern/GHOST_WindowIOS.mm:2418:21: warning: unused variable 'context' [-Wunused-variable]
+ 2418 |   GHOST_ContextIOS *context = reinterpret_cast<GHOST_ContextIOS *>(getContext());
+      |                     ^~~~~~~
+45 warnings and 1 error generated.
+note: Run script build phase 'Generate source/creator/CMakeFiles/locales' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'locales' from project 'Blender')
+note: Run script build phase 'CMake PostBuild Rules' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'install' from project 'Blender')
+note: Run script build phase 'Generate source/creator/buildinfo.h' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'buildinfo' from project 'Blender')
+note: Run script build phase 'Generate source/creator/CMakeFiles/buildinfo' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'buildinfo' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/blender_cross_tools_compile' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'blender_cross_tools_compile' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/ZERO_CHECK' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'ZERO_CHECK' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/ALL_BUILD' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'ALL_BUILD' from project 'Blender')
+** BUILD FAILED **
+
+
+===== CMakeError.log (tail) =====
