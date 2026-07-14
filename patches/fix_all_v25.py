@@ -820,7 +820,7 @@ edit(W, [
    '        initWithTarget:self\n'
    '                action:@selector(handlePointerPress:)];\n'
    '    pointer_press_recognizer.minimumPressDuration = 0.0;\n'
-   '    pointer_press_recognizer.allowedMovement = CGFLOAT_MAX;\n'
+   '    pointer_press_recognizer.allowableMovement = CGFLOAT_MAX;\n'
    '    pointer_press_recognizer.allowedTouchTypes = @[ @(UITouchTypeIndirectPointer) ];\n'
    '    pointer_press_recognizer.cancelsTouchesInView = false;\n'
    '    [window->getView() addGestureRecognizer:pointer_press_recognizer];\n'
