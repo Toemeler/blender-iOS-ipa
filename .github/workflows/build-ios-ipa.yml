@@ -137,12 +137,16 @@ jobs:
           zip -qr Blender-ios.ipa Payload
           ls -lh Blender-ios.ipa
 
-      - name: Upload IPA as run artifact
+      - name: Upload IPA as run artifact (non-fatal, short retention)
+        # Account-wide artifact storage quota must never kill a finished build -
+        # the GitHub Release below is the real distribution channel.
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: Blender-ios-ipa
           path: Blender-ios.ipa
           if-no-files-found: error
+          retention-days: 1
 
       - name: Publish IPA as a GitHub Release
         if: success()
