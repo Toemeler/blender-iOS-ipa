@@ -20,3 +20,19 @@ material slot (node approximation, renders on Metal).
 
 Requires Blender 5.x. Verified in Blender 5.0.1 (CPU + OSL): renders full
 spectral orders (violet→red) from a 1000 nm groove-spacing grating.
+
+## Spectral pipeline (true spectral rendering with stock Cycles)
+
+`spectral_render.py` renders the scene once per wavelength band (default 16 bands,
+390–730 nm) using `diffraction_mono.osl` (single-wavelength grating, intensity-only),
+saving linear EXR passes. `integrate_spectral.py` then integrates the passes against
+the CIE 1931 color-matching functions (Wyman–Sloan–Shirley fit) → XYZ → sRGB with
+hue-preserving gamut mapping. Every wavelength is light-transported independently:
+this is real spectral rendering, no RGB mixing during transport.
+
+    blender -b -P spectral_render.py -- 16 96 640 480
+    python3 integrate_spectral.py      # needs numpy + imageio (or OpenEXR)
+
+More bands = smoother spectrum (32 is lovely, 16 is fine). Works with the node
+material too, so the same pipeline runs against the Metal GPU backend on desktop;
+on the iPad the integration step needs to run on a PC (or any Python) afterwards.
