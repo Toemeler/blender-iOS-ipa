@@ -1,0 +1,112 @@
+/*
+ * Diffraction Grating Reflection
+ *
+ * by Miguel Porces
+ * 2014
+ *
+ * random generator by Brecht
+ *
+ */
+
+
+
+#include "stdosl.h"
+
+void rng_seed(output int rng, int seed)
+{
+    int chash = seed;
+    if (chash == 0) chash = 1;
+    rng = chash * 891694213;
+}
+
+float rng_uniform(output int rng)
+{
+    float res = rng / float(2137483647) * 0.5 + 0.5;
+    rng *= 891694213;
+    return res;
+}
+
+float randomInterval(float minval, float maxval,point ipt)
+{
+    int rng;
+    float f=0;
+    float delta=maxval-minval;
+    f = fmod(cellnoise(ipt*12345.0), 1.0);
+    rng_seed(rng, int(f * 2137483647));
+
+    return delta*rng_uniform(rng)+minval;
+}
+
+void rotateVector(output vector v, vector axis, float angle)
+{
+    float sf=0, cf=0;
+    sincos(angle, sf, cf);
+    v=(normalize(cross(axis,v))*sf)+(v*cf);
+}
+
+
+shader Diffraction
+(
+color Color=1.0,
+float Distance=1200,
+float Roughness=0.0,
+float Rotation=0.0,
+normal Normal = N,
+normal Tangent = normal(0.0,0.0,0.0),
+output closure color BRDF=reflection(N)
+)
+
+{
+    float Rg=clamp(Roughness,0,1);
+    
+    /* setup Tangent direction */
+    normal Tg=Tangent;
+    if (Tangent==normal(0.0,0.0,0.0))
+    {
+        normal Zaxis=normal(0.0,0.0,1.0);
+        Zaxis = transform("object", "world", Zaxis);
+        Tg=normalize(cross(Zaxis,Normal));
+    }
+    rotateVector(Tg, Normal, Rotation*M_2PI);
+    
+    /* setup loop */
+    color cl;
+    BRDF=0;
+    
+    vector rht=cross(I,Normal);
+    float dtr=dot(Tg,rht);
+    float sTheta=length(rht) * dtr;
+    
+    float wave=randomInterval(380, 780,P);
+    float wldst=wave/Distance;
+
+    int ordmin=int(floor(Distance * (-1+sTheta)/wave))-1;
+    int ordmax=int(ceil(Distance * (1-sTheta)/wave));
+ 
+    float orddif;
+    
+    orddif=abs(ordmax-ordmin-1);
+
+    /* sample wavelenght */
+    for(int order=ordmin; order<=ordmax;order++){
+        if(order!=0){
+            /* calculate angle */
+            float wfac=order*wldst+sTheta;
+            float angle= asin(wfac);
+
+
+            /*  rotate normal  */
+            normal NN=Normal;
+            rotateVector(NN, Tg, angle);
+
+            cl=wavelength_color(wave)*(Color)/orddif;
+
+            if(Rg==0.0)
+            {
+                BRDF += (cl * reflection(NN));
+            } else {
+                BRDF += (cl * microfacet("beckmann", NN, Rg, 1.5, 0));
+            }
+        }
+    }
+}
