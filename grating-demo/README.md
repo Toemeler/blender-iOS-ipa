@@ -6,6 +6,10 @@
   approximation that also runs on the Metal GPU backend.
 - `diffraction_grating.osl` — Miguel Porces' ("Secrop") 2014 shader, one line updated
   for modern Cycles (`microfacet_beckmann` → `microfacet("beckmann", …)`).
+- `diffraction_grating_v2.osl` / `scene_v2.py` — v2: stratified 8-bin spectral
+  integration per sample (smooth continuous rainbows instead of RGB speckle),
+  orders capped at |m|<=3 to respect Cycles' per-shader closure limit, slight
+  0.03 roughness, off-axis light, 512 samples + denoising. The .blend now uses v2.
 - `setup_grating.py` — script that rebuilds the whole scene from scratch
   (auto-falls back to the node material where OSL is unavailable).
 

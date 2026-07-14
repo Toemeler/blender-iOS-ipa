@@ -1,0 +1,101 @@
+/*
+ * Diffraction Grating Reflection - v2 (smooth spectral variant)
+ *
+ * Based on the shader by Miguel Porces (2014), random generator by Brecht.
+ * v2 changes (2026):
+ *  - microfacet_beckmann() -> microfacet("beckmann", ...) for modern Cycles.
+ *  - Instead of ONE random wavelength per shading point (which produces
+ *    fixed-pattern RGB blotch), integrate NW stratified wavelength bins per
+ *    sample with a jitter, so orders converge to smooth continuous rainbows.
+ */
+
+#include "stdosl.h"
+
+void rng_seed(output int rng, int seed)
+{
+    int chash = seed;
+    if (chash == 0) chash = 1;
+    rng = chash * 891694213;
+}
+
+float rng_uniform(output int rng)
+{
+    float res = rng / float(2137483647) * 0.5 + 0.5;
+    rng *= 891694213;
+    return res;
+}
+
+float randomInterval(float minval, float maxval, point ipt)
+{
+    int rng;
+    float f = fmod(cellnoise(ipt * 12345.0), 1.0);
+    rng_seed(rng, int(f * 2137483647));
+    return (maxval - minval) * rng_uniform(rng) + minval;
+}
+
+void rotateVector(output vector v, vector axis, float angle)
+{
+    float sf = 0, cf = 0;
+    sincos(angle, sf, cf);
+    v = (normalize(cross(axis, v)) * sf) + (v * cf);
+}
+
+shader Diffraction(
+    color Color = 1.0,
+    float Distance = 1200,      /* groove spacing in nm */
+    float Roughness = 0.0,
+    float Rotation = 0.0,
+    int Wavelengths = 8,        /* spectral bins (keep NW*orders < ~60: Cycles closure limit) */
+    int MaxOrder = 3,           /* highest |diffraction order| to include */
+    normal Normal = N,
+    normal Tangent = normal(0.0, 0.0, 0.0),
+    output closure color BRDF = reflection(N))
+{
+    float Rg = clamp(Roughness, 0, 1);
+
+    normal Tg = Tangent;
+    if (Tangent == normal(0.0, 0.0, 0.0)) {
+        normal Zaxis = normal(0.0, 0.0, 1.0);
+        Zaxis = transform("object", "world", Zaxis);
+        Tg = normalize(cross(Zaxis, Normal));
+    }
+    rotateVector(Tg, Normal, Rotation * M_2PI);
+
+    BRDF = 0;
+
+    vector rht = cross(I, Normal);
+    float sTheta = length(rht) * dot(Tg, rht);
+
+    int NW = max(Wavelengths, 1);
+    /* per-point jitter decorrelates the stratification pattern spatially */
+    float jitter = randomInterval(0.0, 1.0, P);
+
+    for (int w = 0; w < NW; w++) {
+        float wave = 380.0 + (780.0 - 380.0) * ((w + jitter) / NW);
+        float wldst = wave / Distance;
+
+        int ordmin = int(floor(Distance * (-1 + sTheta) / wave)) - 1;
+        int ordmax = int(ceil(Distance * (1 - sTheta) / wave));
+        if (ordmin < -MaxOrder) ordmin = -MaxOrder;
+        if (ordmax >  MaxOrder) ordmax =  MaxOrder;
+        float orddif = abs(ordmax - ordmin - 1);
+
+        for (int order = ordmin; order <= ordmax; order++) {
+            if (order != 0) {
+                float wfac = order * wldst + sTheta;
+                if (wfac >= -1.0 && wfac <= 1.0) {
+                    float angle = asin(wfac);
+                    normal NN = Normal;
+                    rotateVector(NN, Tg, angle);
+                    color cl = wavelength_color(wave) * Color / (orddif * NW);
+                    if (Rg == 0.0) {
+                        BRDF += (cl * reflection(NN));
+                    }
+                    else {
+                        BRDF += (cl * microfacet("beckmann", NN, Rg, 1.5, 0));
+                    }
+                }
+            }
+        }
+    }
+}
