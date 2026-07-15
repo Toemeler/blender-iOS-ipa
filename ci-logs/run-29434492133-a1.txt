@@ -1,0 +1,235 @@
+== RUN 29434492133 attempt 1 on 15.7.7 / Xcode 16.4 Build version 16F6  ==
+
+===== update.log (tail) =====
+git lfs install --skip-repo
+Git LFS initialized.
+
+Configuring Precompiled Libraries
+=================================
+
+Detected platform     : macos
+Detected architecture : arm64
+
+* Enabling precompiled libraries at lib/macos_arm64
+* Enabling precompiled libraries at lib/ios_arm64
+
+Updating Libraries
+==================
+
+* Skipping lib/linux_x64
+* Updating lib/macos_arm64 ...
+GIT_LFS_SKIP_SMUDGE=1 git submodule update --init --progress lib/macos_arm64
+Submodule 'lib/macos_arm64' (https://projects.blender.org/blender/lib-macos_arm64.git) registered for path 'lib/macos_arm64'
+fatal: could not get a repository handle for submodule 'lib/macos_arm64'
+* Skipping lib/windows_x64
+* Skipping lib/windows_arm64
+* Updating lib/ios_arm64 ...
+GIT_LFS_SKIP_SMUDGE=1 git submodule update --init --progress lib/ios_arm64
+Submodule 'lib/ios_arm64' (https://projects.blender.org/blender/lib-ios_arm64.git) registered for path 'lib/ios_arm64'
+fatal: could not get a repository handle for submodule 'lib/ios_arm64'
+
+Update finished with the following messages
+===========================================
+
+Error updating Git submodule lib/macos_arm64
+Error updating Git submodule lib/ios_arm64
+
+===== configure.log (tail) =====
+-- Performing Test CXX_WARN_NO_UNDEF
+-- Performing Test CXX_WARN_NO_UNDEF - Success
+-- Performing Test CXX_WARN_NO_UNDEF_PREFIX
+-- Performing Test CXX_WARN_NO_UNDEF_PREFIX - Success
+-- Performing Test CXX_WARN_NO_INCONSISTENT_MISSING_OVERRIDE
+-- Performing Test CXX_WARN_NO_INCONSISTENT_MISSING_OVERRIDE - Success
+-- numpy found at '/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/python/lib/python3.11/site-packages'
+-- numpy include files found at '/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/python/lib/python3.11/site-packages/numpy/core/include'
+-- Performing Test C_MACRO_PREFIX_MAP
+-- Performing Test C_MACRO_PREFIX_MAP - Success
+-- Performing Test CXX_MACRO_PREFIX_MAP
+-- Performing Test CXX_MACRO_PREFIX_MAP - Success
+-- Configure Ghost for Apple Cross platform: iOS
+-- Performing Test _has_no_error_unused_macros
+-- Performing Test _has_no_error_unused_macros - Success
+-- Performing Test _has_cxxflag_float_conversion
+-- Performing Test _has_cxxflag_float_conversion - Success
+-- Performing Test _has_cxxflag_double_promotion
+-- Performing Test _has_cxxflag_double_promotion - Success
+-- Finding Python Module File: certifi/cacert.pem
+-- Tests: Using Python executable: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/macos_arm64/python/bin/python3.11
+-- Tests: Disabling render tests, missing oiiotool
+-- -- CONFIGURING IOS PLIST -- 
+-- IOS_FIXME: PLATFORM_BUNDLED_LIBRARIES=/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.1.3.1.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.1.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/zlib/lib/libz.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/usd/lib/libusd_ms.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/materialx/lib/libMaterialX.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libIex.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libIlmThread.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXR.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXRCore.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openexr/lib/libOpenEXRUtil.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/imath/lib/libImath.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimageio/lib/libOpenImageIO.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimageio/lib/libOpenImageIO_Util.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/opencolorio/lib/libOpenColorIO.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openvdb/lib/libopenvdb.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslcomp.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslexec.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslnoise.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/osl/lib/liboslquery.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise_core.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/openimagedenoise/lib/libOpenImageDenoise_device_cpu.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbb.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbbmalloc.dylib;/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/lib/ios_arm64/tbb/lib/libtbbmalloc_proxy.dylib
+-- C Compiler:   "AppleClang"
+-- C++ Compiler: "AppleClang"
+-- 
+Blender Configuration
+=====================
+
+  Build Options:
+  - WITH_ALEMBIC                    ON
+  - WITH_BULLET                     ON
+  - WITH_CLANG                      OFF
+  - WITH_CYCLES                     ON
+  - WITH_FFTW3                      ON
+  - WITH_FREESTYLE                  ON
+  - WITH_GMP                        ON
+  - WITH_HARU                       ON
+  - WITH_IK_ITASC                   ON
+  - WITH_IK_SOLVER                  ON
+  - WITH_INPUT_NDOF                 OFF
+  - WITH_INPUT_IME                  ON
+  - WITH_INTERNATIONAL              ON
+  - WITH_MANIFOLD                   ON
+  - WITH_OPENCOLORIO                ON
+  - WITH_OPENIMAGEDENOISE           ON
+  - WITH_OPENSUBDIV                 ON
+  - WITH_OPENVDB                    ON
+  - WITH_POTRACE                    ON
+  - WITH_PUGIXML                    ON
+  - WITH_QUADRIFLOW                 ON
+  - WITH_TBB                        ON
+  - WITH_USD                        OFF
+  - WITH_MATERIALX                  ON
+  - WITH_XR_OPENXR                  OFF
+
+  Compiler Options:
+  - WITH_BUILDINFO                  ON
+  - WITH_OPTIMIZED_BUILD_TOOLS      ON
+
+  System Options:
+  - WITH_INSTALL_PORTABLE           
+  - WITH_MEM_JEMALLOC               ON
+  - WITH_MEM_VALGRIND               OFF
+
+  GHOST Options:
+  - WITH_GHOST_DEBUG                OFF
+  - WITH_GHOST_SDL                  OFF
+
+  Image Formats:
+  - WITH_IMAGE_CINEON               ON
+  - WITH_IMAGE_OPENEXR              ON
+  - WITH_IMAGE_OPENJPEG             ON
+
+  Audio:
+  - WITH_AUDASPACE                  OFF
+  - WITH_CODEC_FFMPEG               ON
+  - WITH_CODEC_SNDFILE              ON
+  - WITH_COREAUDIO                  ON
+  - WITH_JACK                       OFF
+  - WITH_JACK_DYNLOAD               OFF
+  - WITH_OPENAL                     ON
+  - WITH_PULSEAUDIO                 OFF
+  - WITH_PULSEAUDIO_DYNLOAD         
+  - WITH_SDL                        OFF
+  - WITH_WASAPI                     OFF
+
+  Compression:
+  - WITH_LZMA                       ON
+  - WITH_LZO                        ON
+
+  Python:
+  - WITH_PYTHON_INSTALL             ON
+  - WITH_PYTHON_INSTALL_NUMPY       ON
+  - WITH_PYTHON_INSTALL_ZSTANDARD   OFF
+  - WITH_PYTHON_MODULE              OFF
+  - WITH_PYTHON_SAFETY              OFF
+
+  Modifiers:
+  - WITH_MOD_FLUID                  ON
+  - WITH_MOD_OCEANSIM               ON
+  - WITH_MOD_REMESH                 ON
+
+  Rendering:
+  - WITH_HYDRA                      OFF
+
+  Rendering (Cycles):
+  - WITH_CYCLES_OSL                 OFF
+  - WITH_CYCLES_EMBREE              ON
+  - WITH_CYCLES_PATH_GUIDING        ON
+
+  Apple Platform Configuration Options:
+  - APPLE_TARGET_DEVICE             ios
+  - WITH_APPLE_CROSSPLATFORM        ON
+
+  
+-- Configuring done (166.2s)
+-- Generating done (5.7s)
+-- Build files have been written to: /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/build_ios
+
+===== build.log error lines =====
+7:/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/closure/bsdf_diffraction.h:149:27: error: no matching function for call to 'fmax'
+61:1 error generated.
+
+===== build.log (tail) =====
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/device/cpu/kernel.cpp:50:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/device/cpu/kernel_arch_impl.h:26:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/integrator/init_from_bake.h:12:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/integrator/intersect_closest.h:9:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/integrator/guiding.h:15:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/closure/bsdf.h:10:
+/Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/closure/bsdf_diffraction.h:149:27: error: no matching function for call to 'fmax'
+  149 |   *eval = rgb_to_spectrum(fmax(rgb, zero_float3())) * (*pdf);
+      |                           ^~~~
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/device/cpu/kernel.cpp:46:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/device/cpu/globals.h:9:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/types.h:22:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/projection.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/transform.h:11:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/types.h:29:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/types_rgbe.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math_fast.h:26:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math_base.h:21:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/cmath:316:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/__math/hypot.h:15:
+/Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/__math/min_max.h:28:54: note: candidate function not viable: no known conversion from 'const float3' to 'float' for 1st argument
+   28 | _LIBCPP_NODISCARD inline _LIBCPP_HIDE_FROM_ABI float fmax(float __x, float __y) _NOEXCEPT {
+      |                                                      ^    ~~~~~~~~~
+/Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/__math/min_max.h:33:48: note: candidate function not viable: no known conversion from 'const float3' to 'double' for 1st argument
+   33 | _LIBCPP_NODISCARD _LIBCPP_HIDE_FROM_ABI double fmax(double __x, double __y) _NOEXCEPT {
+      |                                                ^    ~~~~~~~~~~
+/Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/__math/min_max.h:37:60: note: candidate function not viable: no known conversion from 'const float3' to 'long double' for 1st argument
+   37 | _LIBCPP_NODISCARD inline _LIBCPP_HIDE_FROM_ABI long double fmax(long double __x, long double __y) _NOEXCEPT {
+      |                                                            ^    ~~~~~~~~~~~~~~~
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/device/cpu/kernel.cpp:46:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/device/cpu/globals.h:9:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/types.h:22:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/projection.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/transform.h:11:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/types.h:29:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/types_rgbe.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math_fast.h:26:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math_base.h:21:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/cmath:328:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/math.h:301:
+/Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/math.h:538:15: note: candidate function not viable: no known conversion from 'const float3' to 'double' for 1st argument
+  538 | extern double fmax(double, double);
+      |               ^    ~~~~~~
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/device/cpu/kernel.cpp:46:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/device/cpu/globals.h:9:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/kernel/types.h:22:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/projection.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/transform.h:11:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/types.h:29:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/types_rgbe.h:7:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math_fast.h:26:
+In file included from /Users/runner/work/blender-iOS-ipa/blender-iOS-ipa/blender/intern/cycles/util/math_base.h:21:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/cmath:316:
+In file included from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/__math/hypot.h:15:
+/Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/usr/include/c++/v1/__math/min_max.h:42:83: note: candidate template ignored: requirement 'is_arithmetic<ccl::float3>::value' was not satisfied [with _A1 = float3, _A2 = float3]
+   42 | _LIBCPP_NODISCARD inline _LIBCPP_HIDE_FROM_ABI typename __promote<_A1, _A2>::type fmax(_A1 __x, _A2 __y) _NOEXCEPT {
+      |                                                                                   ^
+1 error generated.
+note: Run script build phase 'Generate source/creator/CMakeFiles/locales' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'locales' from project 'Blender')
+note: Run script build phase 'CMake PostBuild Rules' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'install' from project 'Blender')
+note: Run script build phase 'Generate source/creator/buildinfo.h' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'buildinfo' from project 'Blender')
+note: Run script build phase 'Generate source/creator/CMakeFiles/buildinfo' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'buildinfo' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/blender_cross_tools_compile' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'blender_cross_tools_compile' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/ZERO_CHECK' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'ZERO_CHECK' from project 'Blender')
+note: Run script build phase 'Generate CMakeFiles/ALL_BUILD' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'ALL_BUILD' from project 'Blender')
+** BUILD FAILED **
+
+
+===== CMakeError.log (tail) =====
