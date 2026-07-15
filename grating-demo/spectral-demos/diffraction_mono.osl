@@ -1,0 +1,47 @@
+/* Monochromatic diffraction grating for spectral multi-pass rendering.
+ * One wavelength per render pass; outputs intensity-only closures.
+ * Grating equation: sin(theta_m) = sin(theta_i) + m*lambda/d
+ * Based on Miguel Porces' shader (2014). */
+#include "stdosl.h"
+
+void rotateVector(output vector v, vector axis, float angle)
+{
+    float sf = 0, cf = 0;
+    sincos(angle, sf, cf);
+    v = (normalize(cross(axis, v)) * sf) + (v * cf);
+}
+
+shader DiffractionMono(
+    float Wavelength = 550.0,   /* nm - set per pass */
+    float Distance = 1000.0,    /* groove spacing nm */
+    float Roughness = 0.03,
+    float ZeroOrder = 0.35,     /* specular strength */
+    int MaxOrder = 3,
+    normal Normal = N,
+    normal Tangent = normal(1.0, 0.0, 0.0),
+    output closure color BRDF = 0)
+{
+    float Rg = clamp(Roughness, 0.0, 1.0);
+    normal Tg = Tangent;
+
+    vector rht = cross(I, Normal);
+    float sTheta = length(rht) * dot(Tg, rht);
+    float wldst = Wavelength / Distance;
+
+    int ordmin = max(int(floor(Distance * (-1 + sTheta) / Wavelength)) - 1, -MaxOrder);
+    int ordmax = min(int(ceil(Distance * (1 - sTheta) / Wavelength)), MaxOrder);
+
+    for (int order = ordmin; order <= ordmax; order++) {
+        float wfac = order * wldst + sTheta;
+        if (wfac >= -1.0 && wfac <= 1.0) {
+            float angle = asin(wfac);
+            normal NN = Normal;
+            rotateVector(NN, Tg, angle);
+            float wgt = (order == 0) ? ZeroOrder : 1.0;
+            if (Rg == 0.0)
+                BRDF += wgt * reflection(NN);
+            else
+                BRDF += wgt * microfacet("beckmann", NN, Rg, 1.5, 0);
+        }
+    }
+}
