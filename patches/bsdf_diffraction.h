@@ -146,7 +146,7 @@ ccl_device int bsdf_diffraction_sample(const ccl_private ShaderClosure *sc,
   /* pdf: uniform over (wavelength band) x (feasible orders). Use a bounded value
    * so the singular direction contributes a finite, well-behaved sample. */
   *pdf = 1.0f / (float)nf;
-  *eval = rgb_to_spectrum(fmax(rgb, zero_float3())) * (*pdf);
+  *eval = rgb_to_spectrum(max(rgb, zero_float3())) * (*pdf);
   return LABEL_REFLECT | LABEL_GLOSSY;
 }
 
