@@ -833,14 +833,23 @@ if HAVE_BPY:
                 SpectralRenderEngine, RENDER_PT_spectral, OBJECT_PT_spectral)
 
     def register():
+        # Idempotent: the engine may be bundled in scripts/startup AND
+        # installed as an addon; the second registration is a no-op.
+        if 'spectral' in bpy.types.Scene.bl_rna.properties:
+            print("[spectral] Spectral Wave Optics already registered; skipping")
+            return
         for c in _classes:
             bpy.utils.register_class(c)
         bpy.types.Scene.spectral = bpy.props.PointerProperty(
             type=SpectralSceneSettings)
         bpy.types.Object.spectral = bpy.props.PointerProperty(
             type=SpectralObjectSettings)
+        print("[spectral] Spectral Wave Optics engine registered "
+              "(Render Properties > Render Engine)")
 
     def unregister():
+        if 'spectral' not in bpy.types.Scene.bl_rna.properties:
+            return
         del bpy.types.Object.spectral
         del bpy.types.Scene.spectral
         for c in reversed(_classes):

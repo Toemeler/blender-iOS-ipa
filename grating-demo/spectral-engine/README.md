@@ -56,6 +56,11 @@ unmodified on the iOS build (no C++ plugin loading, which iOS forbids).
 
 ## Using it on the iPad build
 
+**Build-36 and later: nothing to install.** The engine is bundled into the app
+(`scripts/startup/` auto-registration) and is selectable in Render Properties >
+Render Engine the moment Blender launches. Open a demo .blend and press Render.
+The steps below are only needed on build-35 or earlier.
+
 1. Copy `spectral_engine.py` into *On My iPad → Blender* via the Files app.
 2. Blender → Edit → Preferences → Add-ons → *Install from Disk* → select the
    file → enable **Spectral Wave Optics Renderer**. (Or open it in the
