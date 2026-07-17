@@ -1,66 +1,66 @@
 #!/usr/bin/env python3
-"""build-39 source patches: external-keyboard numpad, mouse-vs-stylus hover,
-per-button press pairing (fixes stuck clicks + RMB drag-cancel), and a
-fail-safe, diagnosable Spectral Wave Optics registration.
+"""build-39 source patches (supersedes the never-compiled build-38):
+external-keyboard numpad, mouse-vs-stylus hover, middle/right mouse buttons
+via the raw touch stream, RMB drag-cancel, and a fail-safe, diagnosable
+Spectral Wave Optics registration.
 
-User reports on build-37/38, with the on-device logs to match:
+Why build-38 failed (CI run 29565413557): it set `buttonMaskRequired` on
+UILongPressGestureRecognizer, but that property only exists on
+UITapGestureRecognizer -- 2 compile errors, no IPA. Lesson applied here:
+non-primary buttons are tracked WITHOUT any gesture-recognizer button API,
+using only `UIEvent.buttonMask` (iOS 13.4, on the UIEvent delivered to the
+raw touchesBegan/Moved/Ended overrides -- the same overrides whose
+"[b26-ptr] raw indirect touch began" lines prove in the on-device log that
+middle/right presses DO arrive there). `sender.buttonMask` in build-37
+compiled fine (UIGestureRecognizer base property), confirming the mask APIs
+exist; only the long-press *gate* property does not.
+
+User reports on build-37, with the on-device logs to match:
 
   1. Numpad shortcuts dead. blender_input.log shows keypad keys arriving as
      HID usages 84-99 with mods=0x200000 (UIKeyModifierNumericPad) and being
-     mapped through the CHARACTER fallback -> main-row digit keys (ghost=49
-     for keypad-1 etc.), while keypad +/-/NumLock map to ghost=-1 (Unknown).
-     Blender's keymap binds viewport views to GHOST_kKeyNumpad*, so nothing
-     fired. Fix: map every keypad HID usage to its GHOST numpad key.
+     mapped through the CHARACTER fallback -> main-row digit keys, while
+     keypad +/- map to ghost=-1 (Unknown). Blender's keymap binds viewport
+     views to GHOST_kKeyNumpad*, so nothing fired. Fix: map every keypad HID
+     usage to its GHOST numpad key.
 
-  2. Eyedropper flaky, number fields sometimes refuse to edit, clicks
-     ("Add Modifier") dying after a while. Two compounding causes:
-       a) The stock handleHover: sets tablet_data.Active =
-          GHOST_kTabletModeStylus on EVERY hover -- mouse included -- and it
-          stays set until the pointer leaves the view. Every subsequent
-          mouse click and move is therefore delivered to Blender as a PEN
-          event with absolute tablet motion. Fix: restrict that recognizer
-          to Apple Pencil and add a mouse hover recognizer that emits plain
-          cursor moves without touching tablet_data.
-       b) build-37/38 tracked the pressed button in a single global slot
-          shared by all three press recognizers. A chord (e.g. RMB pressed
-          while LMB held) overwrote the stored release event, so one button
-          UP was emitted with the wrong mask and the other was lost --
-          Blender was left with a permanently-held button and stopped
-          reacting to clicks. Fix: derive the button from the recognizer's
-          own immutable buttonMaskRequired and keep a per-button down flag,
-          so DOWN/UP always pair per button.
+  2. Middle click (orbit) / Shift+middle (pan) dead. The single long-press
+     recognizer only ever begins for the PRIMARY button (every [b37-ptr]
+     line in the log is mask=1; MMB produced none). Fix: LEFT stays on the
+     proven long-press path; RIGHT/MIDDLE state is diffed from
+     UIEvent.buttonMask in the raw touch overrides, emitting proper
+     DOWN/UP/CURSOR_MOVE streams. Raw touches keep flowing during recognizer
+     drags (every recognizer here has cancelsTouchesInView = false), so
+     chords work too: RMB pressed during an LMB slider drag delivers
+     RIGHTMOUSE press -> Blender's own drag-cancel runs, exactly like a PC.
+     Per-button held flags keep DOWN/UP paired in any release order, so no
+     button can get stuck and wedge clicks (the "Add Modifier stopped
+     working" failure).
 
-  3. Right-click must cancel a slider drag like on a PC. The stock
-     simultaneous-recognition delegate returns NO for everything except
-     pan<->zoom, and the press recognizers had no delegate at all -- so a
-     secondary-button press could not even BEGIN while the primary press
-     gesture was active. Fix: give the press recognizers the window as
-     delegate and allow simultaneous recognition whenever a long-press
-     (button) recognizer is involved. With (2b), RMB during an LMB slider
-     drag now delivers RIGHTMOUSE press -> Blender's own drag-cancel runs,
-     and the later releases pair correctly.
+  3. Eyedropper flaky, number fields sometimes refusing to edit: the stock
+     handleHover sets tablet_data.Active = GHOST_kTabletModeStylus on EVERY
+     hover -- mouse included -- and it stays set until the pointer leaves
+     the view, so all mouse clicks/moves were delivered to Blender as PEN
+     events with absolute tablet motion. Fix: restrict that recognizer to
+     the Apple Pencil; the mouse gets its own plain-motion hover recognizer
+     that never touches tablet_data.
 
-  4. Spectral Wave Optics engine invisible, with ZERO "[spectral]" output in
-     blender_console.log -- even though the IPA verifiably contains
-     scripts/startup/spectral_wave_engine.py, scripts/modules/
-     spectral_engine.py AND numpy. Python's stdout/stderr are block-buffered
-     on iOS (the build-19 freopen redirect only unbuffers the C FILE*), so
-     every Python print -- including a registration traceback -- is lost
-     when the app is killed. Fixes:
-       a) creator.cc: setenv("PYTHONUNBUFFERED", "1", 1) before Python ever
-          initializes, so ALL Python output reaches blender_console.log.
-       b) Rewrite the startup wrapper to log every step (import, register,
-          failure tracebacks) both to stdout and to a direct, unbuffered
-          Documents/spectral_startup.log file.
-       c) If the physics module import OR its register() fails, register a
-          minimal fallback engine under the same 'SPECTRAL_WAVE' id whose
-          Render Properties panel shows the error -- the engine now ALWAYS
-          appears next to Cycles/EEVEE and any failure becomes visible and
-          reportable instead of silent.
+  4. Spectral Wave Optics engine invisible with ZERO "[spectral]" output --
+     even though the build-37 IPA verifiably contains both scripts AND
+     numpy. Python's stdout/stderr are block-buffered on iOS (the build-19
+     freopen only unbuffers the C FILE*), so every Python print -- including
+     a registration traceback -- was lost when the app was killed. Fixes:
+     setenv("PYTHONUNBUFFERED", "1", 1) before the interpreter initializes;
+     rewrite the startup wrapper to also log each step directly to
+     Documents/spectral_startup.log; and on ANY import/register failure,
+     register a fallback engine under the same 'SPECTRAL_WAVE' id whose
+     Render Properties panel shows the error -- the engine now always
+     appears next to Cycles/EEVEE and failures become visible instead of
+     silent.
 
-Anchors target the sources as they exist AFTER fix_mouse_v38.py (and after
-fix_all_v27/v28 + the build-36 script writer). Every edit asserts
-exactly-once application; the script exits non-zero on any mismatch.
+Anchors target the sources as they exist AFTER fix_mouse_v37.py (build-38's
+step is removed from the workflow). Every edit asserts exactly-once (or an
+explicitly stated count); the script exits non-zero on any mismatch.
 """
 import os
 import re
@@ -113,7 +113,7 @@ edit(W, "b39-numpad-map",
 """)
 
 # =========================================================================
-# (2a) Hover: pencil keeps the stylus path; the mouse gets a plain one
+# (3) Hover: pencil keeps the stylus path; the mouse gets a plain one
 # =========================================================================
 edit(W, "b39-hover-split",
      """  hover_gesture_recognizer.delegate = self;
@@ -140,9 +140,9 @@ edit(W, "b39-hover-split",
 """)
 
 # =========================================================================
-# (2b + 3) Per-button press pairing, driven by buttonMaskRequired
+# (2) Per-button state + right/middle from the raw touch stream
 # =========================================================================
-# Replace the shared single-slot globals from build-37 with per-button flags.
+# Replace build-37's shared single-slot globals with per-button held flags.
 edit(W, "b39-globals",
      """/* build-37: which mouse button the active pointer press is (0=left, 1=right,
  * 2=middle) and its matching release event, so the UP we emit always pairs
@@ -151,59 +151,82 @@ static int g_ios_pointer_button_kind = 0;
 static UserInputEvent::EventTypes g_ios_pointer_up_event =
     UserInputEvent::EventTypes::LEFT_BUTTON_UP;
 """,
-     """/* build-39: per-button held flags (0=left, 1=right, 2=middle). Each press
- * recognizer serves exactly one button (its buttonMaskRequired), so DOWN/UP
- * always pair per button even during chords like RMB-cancel of an LMB drag.
- * build-37's single shared slot lost one UP in that case, leaving Blender
- * with a permanently-held button that ate all further clicks. */
+     """/* build-39: per-button held flags (0=left, 1=right, 2=middle). Left is
+ * driven by the long-press recognizer (which only ever begins for the
+ * primary button); right/middle are diffed from UIEvent.buttonMask in the
+ * raw touch overrides. Per-button pairing means no chord or release order
+ * can lose an UP and wedge Blender with a stuck button. */
 static bool g_ios_ptr_kind_down[3] = {false, false, false};
 """)
 
-# Give all three press recognizers the window as delegate so the delegate
-# method below can allow them to run simultaneously (RMB while LMB held).
-edit(W, "b39-lmb-delegate",
-     "    pointer_press_recognizer.cancelsTouchesInView = false;\n",
-     "    pointer_press_recognizer.cancelsTouchesInView = false;\n"
-     "    pointer_press_recognizer.delegate = self;\n")
-edit(W, "b39-rmb-delegate",
-     "    pointer_rmb_recognizer.cancelsTouchesInView = false;\n",
-     "    pointer_rmb_recognizer.cancelsTouchesInView = false;\n"
-     "    pointer_rmb_recognizer.delegate = self;\n")
-edit(W, "b39-mmb-delegate",
-     "    pointer_mmb_recognizer.cancelsTouchesInView = false;\n",
-     "    pointer_mmb_recognizer.cancelsTouchesInView = false;\n"
-     "    pointer_mmb_recognizer.delegate = self;\n")
-
-# Allow simultaneous recognition whenever a button (long-press) recognizer is
-# involved: chords, and press-during-pan, must not block each other.
-edit(W, "b39-simultaneous",
-     """  if (gestureRecognizer == pan_gesture_recognizer &&
-      otherGestureRecognizer == zoom_gesture_recognizer)
-  {
-    return YES;
+# Raw touchesBegan: track right/middle from the event's button mask.
+edit(W, "b39-raw-began",
+     """  for (UITouch *touch in touches) {
+    if (touch.type == UITouchTypeIndirectPointer) {
+      g_ios_pointer_touch = touch;
+      fprintf(stderr, "[b26-ptr] raw indirect touch began\\n");
+      break;
+    }
   }
-  return NO;
 }
 """,
-     """  if (gestureRecognizer == pan_gesture_recognizer &&
-      otherGestureRecognizer == zoom_gesture_recognizer)
-  {
-    return YES;
+     """  for (UITouch *touch in touches) {
+    if (touch.type == UITouchTypeIndirectPointer) {
+      g_ios_pointer_touch = touch;
+      /* build-39: right/middle buttons never begin the primary-button-only
+       * long-press recognizer; their state is tracked from the raw event's
+       * buttonMask instead. */
+      [self syncPointerButtons:event touch:touch];
+      break;
+    }
   }
-  /* build-39: pointer button (zero-delay long-press) recognizers must be able
-   * to recognize alongside everything - especially each other - so e.g. a
-   * right-click can begin while a left-drag is active and cancel it exactly
-   * like on a PC. */
-  if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]] ||
-      [otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]])
-  {
-    return YES;
-  }
-  return NO;
 }
 """)
 
-# Rewrite handlePointerPress: kind from buttonMaskRequired + per-kind flags.
+# Raw touchesMoved: keep the mask in sync (catches chords mid-drag) and emit
+# cursor moves for right/middle-only drags (orbit / pan), which have no
+# recognizer feeding them.
+edit(W, "b39-raw-moved",
+     "  /* build-26: pointer drag cursor-moves are emitted by handlePointerPress (Changed). */\n}\n",
+     """  /* build-26: LEFT drag cursor-moves are emitted by handlePointerPress
+   * (Changed). build-39: right/middle drags never begin that recognizer, so
+   * their button state and cursor moves are driven from the raw stream. */
+  for (UITouch *touch in touches) {
+    if (touch.type == UITouchTypeIndirectPointer) {
+      [self syncPointerButtons:event touch:touch];
+      if ((g_ios_ptr_kind_down[1] || g_ios_ptr_kind_down[2]) && !g_ios_ptr_kind_down[0]) {
+        CGPoint p = [touch locationInView:window->getView()];
+        p = window->scalePointToWindow(p);
+        UserInputEvent event_info(&p, nullptr, nullptr, false);
+        event_info.add_event(UserInputEvent::EventTypes::CURSOR_MOVE);
+        [self generateUserInputEvents:event_info];
+      }
+      break;
+    }
+  }
+}
+""")
+
+# Raw touchesEnded + touchesCancelled (identical text, count=2): force-release
+# any held right/middle buttons when the pointer touch sequence ends.
+edit(W, "b39-raw-ended",
+     """  if (g_ios_pointer_touch && [touches containsObject:g_ios_pointer_touch]) {
+    g_ios_pointer_touch = nil;
+  }
+""",
+     """  for (UITouch *touch in touches) {
+    if (touch.type == UITouchTypeIndirectPointer) {
+      [self releasePointerButtons:touch];
+      break;
+    }
+  }
+  if (g_ios_pointer_touch && [touches containsObject:g_ios_pointer_touch]) {
+    g_ios_pointer_touch = nil;
+  }
+""", count=2)
+
+# New helper methods + left-only press handler. Replace the whole build-37
+# handler (bounded by the wheel handler that follows it).
 with open(W) as f:
     src = f.read()
 pat = re.compile(
@@ -214,26 +237,11 @@ if len(matches) != 1:
     sys.stderr.write(f"FATAL b39-press-handler: handler match {len(matches)}x\n")
     sys.exit(1)
 
-NEW_PRESS = r'''- (void)handlePointerPress:(UILongPressGestureRecognizer *)sender
+NEW_PRESS = r'''/* build-39: shared emitter for mouse button transitions. kind: 0=left,
+ * 1=right, 2=middle. Updates the per-button flags and the pan-gate flag,
+ * then delivers CURSOR_MOVE + the button event at the given point. */
+- (void)emitPointerButton:(int)kind down:(BOOL)down at:(CGPoint)p
 {
-  /* build-39: the button is a fixed property of the recognizer itself
-   * (buttonMaskRequired, set at registration: primary=left, secondary=right,
-   * button-3=middle), not of the volatile per-event buttonMask. Each button
-   * keeps its own held flag, so DOWN/UP always pair per button and chords
-   * (e.g. RMB pressed to cancel an LMB slider drag, releases in any order)
-   * can no longer lose a release and wedge Blender's button state. */
-  CGPoint p = [sender locationInView:window->getView()];
-  p = window->scalePointToWindow(p);
-  int kind = 0;
-  if (@available(iOS 13.4, *)) {
-    UIEventButtonMask req = sender.buttonMaskRequired;
-    if (req & UIEventButtonMaskForButtonNumber(3)) {
-      kind = 2;
-    }
-    else if (req & UIEventButtonMaskSecondary) {
-      kind = 1;
-    }
-  }
   static const UserInputEvent::EventTypes k_downs[3] = {
       UserInputEvent::EventTypes::LEFT_BUTTON_DOWN,
       UserInputEvent::EventTypes::RIGHT_BUTTON_DOWN,
@@ -242,40 +250,75 @@ NEW_PRESS = r'''- (void)handlePointerPress:(UILongPressGestureRecognizer *)sende
       UserInputEvent::EventTypes::LEFT_BUTTON_UP,
       UserInputEvent::EventTypes::RIGHT_BUTTON_UP,
       UserInputEvent::EventTypes::MIDDLE_BUTTON_UP};
+  g_ios_ptr_kind_down[kind] = down ? true : false;
+  g_ios_pointer_button_down = g_ios_ptr_kind_down[0] || g_ios_ptr_kind_down[1] ||
+                              g_ios_ptr_kind_down[2];
+  fprintf(stderr, "[b39-ptr] kind=%d %s %.1f,%.1f\n", kind, down ? "DOWN" : "UP", p.x, p.y);
+  UserInputEvent event_info(&p, nullptr, nullptr, false);
+  event_info.add_event(UserInputEvent::EventTypes::CURSOR_MOVE);
+  event_info.add_event(down ? k_downs[kind] : k_ups[kind]);
+  [self generateUserInputEvents:event_info];
+}
+
+/* build-39: diff right/middle button state from the live UIEvent.buttonMask
+ * of the raw indirect-pointer touch stream. The long-press recognizer only
+ * ever begins for the PRIMARY button (its tap-family gate property is not
+ * exposed on long-press -- build-38's attempt to set it did not compile),
+ * but the raw event mask carries every button. */
+- (void)syncPointerButtons:(UIEvent *)event touch:(UITouch *)touch
+{
+  if (@available(iOS 13.4, *)) {
+    CGPoint p = [touch locationInView:window->getView()];
+    p = window->scalePointToWindow(p);
+    UIEventButtonMask mask = event.buttonMask;
+    bool right = (mask & UIEventButtonMaskSecondary) != 0;
+    bool middle = (mask & UIEventButtonMaskForButtonNumber(3)) != 0;
+    if (right != g_ios_ptr_kind_down[1]) {
+      [self emitPointerButton:1 down:(right ? YES : NO) at:p];
+    }
+    if (middle != g_ios_ptr_kind_down[2]) {
+      [self emitPointerButton:2 down:(middle ? YES : NO) at:p];
+    }
+  }
+}
+
+/* build-39: the pointer touch sequence ended/cancelled - release any held
+ * right/middle button so Blender's button state can never wedge. */
+- (void)releasePointerButtons:(UITouch *)touch
+{
+  CGPoint p = [touch locationInView:window->getView()];
+  p = window->scalePointToWindow(p);
+  for (int kind = 1; kind <= 2; kind++) {
+    if (g_ios_ptr_kind_down[kind]) {
+      [self emitPointerButton:kind down:NO at:p];
+    }
+  }
+}
+
+- (void)handlePointerPress:(UILongPressGestureRecognizer *)sender
+{
+  /* build-39: this recognizer only ever begins for the PRIMARY button, so it
+   * is the LEFT-button path (down / drag-moves / up). Right/middle are
+   * driven from the raw touch stream (syncPointerButtons). Per-button flags
+   * keep DOWN/UP paired even during chords like RMB-cancel of an LMB drag. */
+  CGPoint p = [sender locationInView:window->getView()];
+  p = window->scalePointToWindow(p);
   if (sender.state == UIGestureRecognizerStateBegan) {
-    if (!g_ios_ptr_kind_down[kind]) {
-      g_ios_ptr_kind_down[kind] = true;
-      g_ios_pointer_button_down = true;
-      fprintf(stderr, "[b39-ptr] kind=%d DOWN %.1f,%.1f\n", kind, p.x, p.y);
-      UserInputEvent event_info(&p, nullptr, nullptr, false);
-      event_info.add_event(UserInputEvent::EventTypes::CURSOR_MOVE);
-      event_info.add_event(k_downs[kind]);
-      [self generateUserInputEvents:event_info];
+    if (!g_ios_ptr_kind_down[0]) {
+      [self emitPointerButton:0 down:YES at:p];
     }
   }
   else if (sender.state == UIGestureRecognizerStateChanged) {
-    /* All recognizers of held buttons receive Changed; only the lowest held
-     * kind forwards cursor moves so chords do not duplicate motion events. */
-    int lowest = g_ios_ptr_kind_down[0] ? 0 : (g_ios_ptr_kind_down[1] ? 1 : 2);
-    if (kind == lowest) {
-      UserInputEvent event_info(&p, nullptr, nullptr, false);
-      event_info.add_event(UserInputEvent::EventTypes::CURSOR_MOVE);
-      [self generateUserInputEvents:event_info];
-    }
+    UserInputEvent event_info(&p, nullptr, nullptr, false);
+    event_info.add_event(UserInputEvent::EventTypes::CURSOR_MOVE);
+    [self generateUserInputEvents:event_info];
   }
   else if (sender.state == UIGestureRecognizerStateEnded ||
            sender.state == UIGestureRecognizerStateCancelled ||
            sender.state == UIGestureRecognizerStateFailed)
   {
-    if (g_ios_ptr_kind_down[kind]) {
-      g_ios_ptr_kind_down[kind] = false;
-      g_ios_pointer_button_down = g_ios_ptr_kind_down[0] || g_ios_ptr_kind_down[1] ||
-                                  g_ios_ptr_kind_down[2];
-      fprintf(stderr, "[b39-ptr] kind=%d UP %.1f,%.1f\n", kind, p.x, p.y);
-      UserInputEvent event_info(&p, nullptr, nullptr, false);
-      event_info.add_event(UserInputEvent::EventTypes::CURSOR_MOVE);
-      event_info.add_event(k_ups[kind]);
-      [self generateUserInputEvents:event_info];
+    if (g_ios_ptr_kind_down[0]) {
+      [self emitPointerButton:0 down:NO at:p];
     }
   }
 }
@@ -450,6 +493,6 @@ with open(WRAPPER, "w") as f:
 applied.append("b39-wrapper")
 print(f"{WRAPPER}: rewritten (fail-safe, {len(WRAPPER_SRC)} bytes)")
 
-print(f"BUILD-39 (numpad + mouse/stylus hover split + per-button pairing + "
-      f"RMB drag-cancel + diagnosable spectral engine) APPLIED OK "
+print(f"BUILD-39 (numpad + raw-touch M/R buttons + RMB drag-cancel + "
+      f"mouse/stylus hover split + diagnosable spectral engine) APPLIED OK "
       f"({len(applied)} edits)")
