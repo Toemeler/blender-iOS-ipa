@@ -35,3 +35,8 @@ They are the human-readable form of the modifications that produce the released 
     still rejects one-finger trackpad pans but no longer swallows physical mouse buttons. This gate
     returning `OPERATOR_FINISHED` was the real cause of "middle mouse does nothing", misread for
     many builds as broken modal operators.
+- **`fix_input_v52.py`** — `b52-mmb-echo-guard` drops middle-button rising edges
+  within 150 ms of a release, killing the phantom middle click produced when a
+  stale UIKit `buttonMask` re-presses a button the GCMouse path already
+  released. `b52-ui-click-diag` logs the UI click-routing decision
+  (`active_but` / `over_but`) for every mouse press reaching `ui_region_handler`.

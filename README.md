@@ -158,96 +158,73 @@ The `WM_main_entry()` vs `WM_main()` lead is a dead end.
 Verified to apply cleanly on top of the whole chain (v27 → v50) against the pinned sources, with
 brace/paren balance preserved. **Untested on device at time of writing — verify.**
 
-### Next: native middle-mouse (build-52)
+### Confirmed on device (build-51)
 
-With the gate narrowed, the build-50 emulation is no longer needed. Reverting build-50's
-`MIDDLEMOUSE` suppression (the `if (kind == 2) { … return; }` block in `emitPointerButton`)
-restores the genuine desktop mapping through real modal operators, with build-49's per-frame
-`UITouch` polling supplying the motion:
+Middle-drag orbit and Shift+middle-drag pan work. The console log shows 807
+`TRACKPADPAN` events across six clean drags, and every `MIDDLEMOUSE` press now
+reaches `view3d.rotate` / `view3d.move` for real.
 
-| Input | Operator |
-|---|---|
-| MMB drag | `view3d.rotate` (orbit) |
-| Shift + MMB drag | `view3d.move` (pan) |
-| Ctrl + MMB drag | `view3d.zoom` |
-| Shift + Ctrl + MMB drag | `view3d.dolly` |
+### Fixed in build-52: phantom middle click
 
-Useful cross-check: `view3d.zoom` and `view3d.dolly` are **not** gated on the ios branch, so if
-Ctrl+middle-drag ever zoomed while plain middle-drag did nothing, that alone isolates the gate.
-Do this only after build-51 is confirmed on device, so the two changes stay independently testable.
+Three of six middle drags ended with a middle click nobody made:
 
-### Input architecture (as patched)
-
-UIKit does **not** deliver `touchesMoved`, pan-recognizer updates or pointer-region callbacks while
-a non-primary mouse button is held, and `GCMouse`'s default main-queue delivery is starved in
-`UITrackingRunLoopMode` for exactly that period. What *does* work, and what the current code relies
-on:
-
-- the tracked `UITouch` object stays positionally accurate throughout such a drag, and
-- a `CADisplayLink` in `NSRunLoopCommonModes` keeps firing.
-
-So button state comes from `UIEvent.buttonMask` in the raw touch overrides, and motion comes from
-**polling** that `UITouch` once per display frame (`gcDisplayTick:`). `GCMouse` remains a fallback
-(deltas accumulated on a background queue, drained by the same display link). Note also that the
-long-press recognizer's behaviour is **version-dependent**: on iPadOS 27 it sometimes begins for
-non-primary buttons, so its `Began` is gated on `sender.buttonMask` to avoid phantom left clicks.
-
-### Debugging without a 40-minute build
-
-Blender's Python console is the fastest instrument available. In a Text Editor area, run:
-
-```python
-import bpy
-class T(bpy.types.Operator):
-    bl_idname = "wm.evtrace"; bl_label = "trace"
-    def modal(self, ctx, ev):
-        print("EV", ev.type, ev.value, ev.mouse_x, ev.mouse_y, flush=True)
-        return {'CANCELLED'} if ev.type == 'ESC' else {'PASS_THROUGH'}
-    def invoke(self, ctx, ev):
-        ctx.window_manager.modal_handler_add(self); return {'RUNNING_MODAL'}
-bpy.utils.register_class(T)
-bpy.ops.wm.evtrace('INVOKE_DEFAULT')
+```
+[b44-gcm] btn kind=2 pressed=0 (flag=1)
+[b50-mmb] drag end (travel 3890.1)
+[b50-mmb] press (trackpad emulation armed)     <-- nobody touched the mouse
+[b50-mmb] click (travel 0.0)
 ```
 
-Every event Blender actually sees is then logged to `blender_console.log`. Operators that need a
-3D view must be called with a context override (`bpy.context.temp_override(window=…, area=…,
-region=…)`) or `poll()` fails. Python output reaches the log because `PYTHONUNBUFFERED` is set
-before the interpreter starts (build-39) — without it, tracebacks are lost when the app is killed.
+Two sources drive the middle button. The GCMouse handler reports the release
+first and clears `g_ios_ptr_kind_down[2]`; a raw UIKit touch still carrying
+button 3 in its `event.buttonMask` then reaches `syncPointerButtons`, sees the
+flag disagree and re-presses it. `touchesEnded` releases it again, and
+build-50's zero-travel click path turns that into a real middle click.
 
-Build-48 also enables `G_DEBUG_EVENTS | G_DEBUG_HANDLERS` at startup, which prints every event and
-keymap decision. Two traps when reading that output: Blender **suppresses mouse-motion events**
-from the print (`!ISMOUSE_MOTION`), so their absence proves nothing; and the "which keymap item
-matched" line goes through CLOG, not `printf`, so it does not appear either. What *is* meaningful
-is where the cascade stops — a cascade that ends early means an item consumed the event.
+Harmless before build-51 because the two-finger gate swallowed it. Not harmless
+now: `MIDDLEMOUSE` press invokes `view3d.rotate` for real, and both navigation
+operators carry `OPTYPE_BLOCKING | OPTYPE_GRAB_CURSOR_XY`, so every long drag
+ended by briefly entering a blocking modal operator with a cursor grab.
+`b52-mmb-echo-guard` drops middle-button rising edges within 150 ms of a
+release; no physical button bounces that fast.
 
-### Workflow conventions
+### Open: "Add Modifier" works once, then stops
 
-- The workflow **does not check out this repository** — it only clones Blender. Every patch is
-  therefore **base64-embedded** in the workflow YAML; the copies in `patches/` are the reviewable
-  source of truth and must be kept byte-identical to the embedded payloads.
-- Patches are strictly ordered and apply to the output of the previous one. Each asserts its anchor
-  occurs an exact number of times and exits non-zero otherwise, so a drifted anchor fails the build
-  loudly instead of silently producing a wrong binary.
-- Verify a new patch against the real sources before pushing: fetch the pinned Blender files, run
-  the whole chain in order, then check brace/paren balance and that no stale symbol survives.
-- `GHOST_WindowIOS.mm` compiles under **MRC, not ARC** — `__weak` will not compile there.
-- Two APIs that look right and are not: `buttonMaskRequired` exists only on
-  `UITapGestureRecognizer` (setting it on a long-press recognizer broke build-38), and a combined
-  button mask means *chording*, not "any of these buttons".
+A UI click-routing failure, not an input-layer one. All 15 left-button
+`DOWN`/`UP` pairs in the log are cleanly paired at the GHOST level and all 15
+reached Blender as `LEFTMOUSE PRESS` + `RELEASE`. What differs is where they go:
 
-## License
+- 14 of 15 presses were consumed before any region keymap was checked. That is
+  the healthy path — `UI_region_handlers_add` puts the UI handler at the head of
+  `region->handlers`, so a click that lands on a button never reaches a keymap.
+- The failing click at `(2206,709)` is the only one whose press ran the full
+  cascade: `Screen Editing` → `User Interface` → `Frames` → `View2D Buttons
+  List` → `Property Editor`. `ui_region_handler` returned
+  `WM_UI_HANDLER_CONTINUE`; no button took it.
 
-Blender is released under the **GNU General Public License**. See
-<https://www.blender.org/about/license/> for the exact version and details, and the `COPYING` file in
-the Blender source tree. The patches in this repository are provided under the same GPL terms.
+From `interface_handlers.cc` there are exactly two ways that happens:
 
-## Trademark
+1. `ui_handle_button_over()` ran and found nothing. It only activates a button
+   when `event->type == MOUSEMOVE`, so a press that arrives without a
+   `MOUSEMOVE` having been delivered over the button first can never activate
+   it.
+2. A **stale active button** exists in that region, so `ui_region_handler` calls
+   `ui_handle_button_event()` on it instead of `ui_handle_button_over()`, and
+   that button ignores a press aimed somewhere else.
 
-**"Blender" and the Blender logo are trademarks of the Blender Foundation.** This is an **unofficial**
-build and is **not affiliated with, endorsed by, or supported by** the Blender Foundation. If you
-redistribute it, please make its unofficial status clear and avoid implying any official association.
+(2) fits "worked once, then never again", and matches the wedged-click failure
+`fix_input_v39.py` was written against. The build-48 trace cannot tell them
+apart: Blender excludes `MOUSEMOVE` from `--debug-handlers`, and
+`ui_region_handler` prints nothing at all.
 
-## Credits
+`b52-ui-click-diag` closes that gap. Every mouse button press/release reaching
+`ui_region_handler` now logs the region type, the active button and the button
+under the cursor:
 
-- The **Blender Foundation** and Blender contributors — for Blender and the iOS port.
-- **Megabits Studio** — for the original tutorial on compiling Blender for iPad.
+```
+[b52-ui] LMB PRESS at (2206,709) region=1 active_but=none over_but=Add Modifier
+```
+
+`active_but` non-`none` while `over_but` names a different button proves (2);
+`over_but=none` on a button you did click proves (1). Reproduce once — add a
+modifier, then try to add a second — and the log names the culprit.
