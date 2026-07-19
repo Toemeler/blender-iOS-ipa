@@ -73,6 +73,9 @@ honor the GPL, the **complete corresponding source** is:
     wheel notches, per-button press tracking, right-click during a drag),
   - stop mouse hover from being reported to Blender as an active stylus (build-39) — this had
     been corrupting eyedropper, number-field editing and assorted clicks,
+  - fix 3D-view navigation from an external mouse: the iOS branch rejected every navigation
+    event lacking `WM_EVENT_MULTITOUCH_TWO_FINGERS`, which no mouse event can carry
+    (build-51),
   - bundle a **Spectral Wave Optics** render engine plus an iOS-native numpy (build-42/45),
   - add an input-event log (`blender_input.log`), a console log (`blender_console.log`) and a
     startup log for the render engine (`spectral_startup.log`) in the app's Documents folder,
@@ -103,39 +106,75 @@ This section is the working context for whoever picks the project up next.
 - **Left click/drag, right click, and button chords** — e.g. right-click while left-dragging
   pairs correctly and no button can get stuck (which used to make clicks stop working entirely).
 
-### The open problem: modal operators
+### Solved (build-51): the iOS two-finger navigation gate
 
-Middle-mouse orbit still does not work, and the diagnosis is now precise. An in-app modal-operator
-trace (see *Debugging without a build* below) shows Blender receives a **textbook** middle drag:
+Middle-mouse orbit never worked because Blender's `ios` branch **refuses to navigate the 3D view
+from anything that is not flagged as a two-finger trackpad gesture**. Both `viewrotate_invoke`
+(`view3d_navigate_view_rotate.cc`) and `viewmove_invoke` (`view3d_navigate_view_move.cc`) open with:
 
+```c
+#ifdef WITH_APPLE_CROSSPLATFORM
+  /* Only scroll view with multiple fingers on iOS. */
+  if (!(event->flag & WM_EVENT_MULTITOUCH_TWO_FINGERS)) {
+    return OPERATOR_FINISHED;
+  }
+#endif
 ```
-EV MIDDLEMOUSE PRESS 397 1677
-EV MOUSEMOVE 400 1677 ... 434 1666 ... 512 1660      (~500 smooth moves)
-EV MIDDLEMOUSE RELEASE 706 1670
-```
 
-The `--debug-handlers` trace also shows the press being consumed inside the `3D View` keymap, and
-at release the **whole keymap cascade runs again** — proving no modal handler was alive. Invoking
-`bpy.ops.view3d.rotate('INVOKE_DEFAULT')` by hand and then moving the mouse does not orbit either,
-with no mouse buttons involved at all.
+`WM_EVENT_MULTITOUCH_TWO_FINGERS` is set in `wm_event_system.cc` **only** when
+`GHOST_TEventTrackpadData::numFingers == 2` — an iOS-branch-only field.
+`generateUserInputEvents` sends `numFingers = 1` for `PAN_GESTURE` and `2` for
+`PAN_GESTURE_TWO_FINGERS`, and the latter is emitted from exactly one place: `handlePan2f`, the
+two-finger trackpad gesture. That single fact explains everything:
 
-**Conclusion: modal operators appear broken on this iOS build.** Everything that works uses an
-immediate (non-modal) path — wheel zoom, and the two-finger trackpad orbit/pan/zoom. Everything
-that fails needs a modal handler. A cheap confirmation is to press `B` in the viewport and drag a
-box select (a modal operator with no button dependency): if no box appears, the theory holds.
+- **Real `MIDDLEMOUSE` (builds 37–49) could never pass.** `wm_event_add_ghostevent` zeroes
+  `event.flag` on every event and only the trackpad branch ORs the multitouch bits in, so a button
+  event cannot carry the flag. `view3d.rotate` returned `OPERATOR_FINISHED` before
+  `view3d_navigate_invoke_impl` ever ran, so no modal handler was ever installed.
+- **Build-50's emulation could not pass either**, because it emitted plain `PAN_GESTURE`
+  (`numFingers = 1`).
+- **Two-finger trackpad orbit works** because it is the one path that sets the flag.
 
-**Current approach (build-50):** stop fighting the modal machinery and reuse the path that works.
-While the middle button is held, the per-frame poll emits `UserInputEvent::PAN_GESTURE`
-(→ `GHOST_EventTrackpad(Scroll)` → Blender `TRACKPADPAN`), which the default 3D View keymap binds
-to `view3d.rotate`, and with Shift to `view3d.move` — both applied immediately inside `invoke()`.
-`MIDDLEMOUSE` press/release are suppressed during drags (they would start the broken modal
-operator); a press with under 6 px of travel still emits a real middle click at release.
-**Untested at time of writing — verify on device.**
+**Modal operators are NOT broken on this build.** The earlier diagnosis was an illusion:
+`OPERATOR_FINISHED` still produces `WM_HANDLER_BREAK`, which ends the keymap cascade — so a no-op
+early return is indistinguishable from a successful handle in a `--debug-handlers` trace. The
+cascade re-running at release, and `bpy.ops.view3d.rotate('INVOKE_DEFAULT')` doing nothing, are
+both direct consequences of the same early return (a synthesised event carries no multitouch flag).
+The `WM_main_entry()` vs `WM_main()` lead is a dead end.
 
-If build-50 works, the same trick fixes any other modal-dependent interaction. If it does not, the
-next step is to fix modal handling itself: the iOS branch runs `WM_main_entry()` instead of
-`WM_main()` (see `source/creator/creator.cc`), so start by comparing how that loop drives
-`wm_event_do_handlers()` and whether modal handlers survive between iterations.
+**The fix (build-51, `patches/fix_input_v51.py`), three anchored edits:**
+
+- `b51-mmb-two-fingers` — the middle-drag poll now emits `PAN_GESTURE_TWO_FINGERS`, reusing
+  byte-for-byte the path the trackpad already proves on device. Build-50's `-d.y` negation is
+  dropped: `handlePan2f` forwards `translationInView` deltas unnegated in view space, and the
+  two-finger event also sets `isDirectionInverted = true`, which flips the delta term again inside
+  `viewrotate_invoke_impl` (`m_xy = 2*xy - prev_xy`). Keeping the negation would orbit vertically
+  backwards.
+- `b51-rotate-gate` / `b51-move-gate` — narrows the gate to `ISMOUSE_GESTURE(event->type) && !flag`.
+  `ISMOUSE_GESTURE` covers `MOUSEPAN..MOUSESMARTZOOM`, so one-finger trackpad pans are still
+  rejected and trackpad behaviour is bit-for-bit unchanged, but physical mouse buttons are no
+  longer swallowed. Inert while build-50 still suppresses `MIDDLEMOUSE` during drags.
+
+Verified to apply cleanly on top of the whole chain (v27 → v50) against the pinned sources, with
+brace/paren balance preserved. **Untested on device at time of writing — verify.**
+
+### Next: native middle-mouse (build-52)
+
+With the gate narrowed, the build-50 emulation is no longer needed. Reverting build-50's
+`MIDDLEMOUSE` suppression (the `if (kind == 2) { … return; }` block in `emitPointerButton`)
+restores the genuine desktop mapping through real modal operators, with build-49's per-frame
+`UITouch` polling supplying the motion:
+
+| Input | Operator |
+|---|---|
+| MMB drag | `view3d.rotate` (orbit) |
+| Shift + MMB drag | `view3d.move` (pan) |
+| Ctrl + MMB drag | `view3d.zoom` |
+| Shift + Ctrl + MMB drag | `view3d.dolly` |
+
+Useful cross-check: `view3d.zoom` and `view3d.dolly` are **not** gated on the ios branch, so if
+Ctrl+middle-drag ever zoomed while plain middle-drag did nothing, that alone isolates the gate.
+Do this only after build-51 is confirmed on device, so the two changes stay independently testable.
 
 ### Input architecture (as patched)
 

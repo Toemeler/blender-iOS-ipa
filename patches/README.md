@@ -24,3 +24,14 @@ They are the human-readable form of the modifications that produce the released 
   - **Cycles kernel cache actually persists** — on iOS `serializeToURL:` fails with "Invalid URL"
     unless the destination file already exists (macOS creates it); pre-create dir + empty file,
     so kernels compile once and load near-instantly on later sessions.
+- **`fix_input_v50.py`** — middle-drag emits trackpad PAN events instead of relying on
+  `MIDDLEMOUSE` (superseded in effect by v51, which supplies the flag that made it work).
+- **`fix_input_v51.py`** — the fix for external-mouse 3D-view navigation:
+  - `GHOST_WindowIOS.mm`: the middle-drag poll emits `PAN_GESTURE_TWO_FINGERS` (`numFingers = 2`)
+    instead of `PAN_GESTURE` (`numFingers = 1`), with the delta forwarded unnegated in view space
+    to match `handlePan2f`.
+  - `view3d_navigate_view_rotate.cc` / `view3d_navigate_view_move.cc`: the iOS-only
+    `WM_EVENT_MULTITOUCH_TWO_FINGERS` gate is narrowed to `ISMOUSE_GESTURE(event->type)`, so it
+    still rejects one-finger trackpad pans but no longer swallows physical mouse buttons. This gate
+    returning `OPERATOR_FINISHED` was the real cause of "middle mouse does nothing", misread for
+    many builds as broken modal operators.
