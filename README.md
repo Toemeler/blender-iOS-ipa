@@ -188,43 +188,47 @@ ended by briefly entering a blocking modal operator with a cursor grab.
 `b52-mmb-echo-guard` drops middle-button rising edges within 150 ms of a
 release; no physical button bounces that fast.
 
-### Open: "Add Modifier" works once, then stops
+### Open: dead clicks in the Properties editor after the search popup (build-53 probe + self-heal)
 
-A UI click-routing failure, not an input-layer one. All 15 left-button
-`DOWN`/`UP` pairs in the log are cleanly paired at the GHOST level and all 15
-reached Blender as `LEFTMOUSE PRESS` + `RELEASE`. What differs is where they go:
-
-- 14 of 15 presses were consumed before any region keymap was checked. That is
-  the healthy path — `UI_region_handlers_add` puts the UI handler at the head of
-  `region->handlers`, so a click that lands on a button never reaches a keymap.
-- The failing click at `(2206,709)` is the only one whose press ran the full
-  cascade: `Screen Editing` → `User Interface` → `Frames` → `View2D Buttons
-  List` → `Property Editor`. `ui_region_handler` returned
-  `WM_UI_HANDLER_CONTINUE`; no button took it.
-
-From `interface_handlers.cc` there are exactly two ways that happens:
-
-1. `ui_handle_button_over()` ran and found nothing. It only activates a button
-   when `event->type == MOUSEMOVE`, so a press that arrives without a
-   `MOUSEMOVE` having been delivered over the button first can never activate
-   it.
-2. A **stale active button** exists in that region, so `ui_region_handler` calls
-   `ui_handle_button_event()` on it instead of `ui_handle_button_over()`, and
-   that button ignores a press aimed somewhere else.
-
-(2) fits "worked once, then never again", and matches the wedged-click failure
-`fix_input_v39.py` was written against. The build-48 trace cannot tell them
-apart: Blender excludes `MOUSEMOVE` from `--debug-handlers`, and
-`ui_region_handler` prints nothing at all.
-
-`b52-ui-click-diag` closes that gap. Every mouse button press/release reaching
-`ui_region_handler` now logs the region type, the active button and the button
-under the cursor:
+Two sessions, same signature: clicks in the Properties editor work until the Add
+Modifier search popup has been used; afterwards a press in the main region reports
 
 ```
-[b52-ui] LMB PRESS at (2206,709) region=1 active_but=none over_but=Add Modifier
+[b52-ui] LMB PRESS at (2851,1285) region=0 active_but=none over_but=none
 ```
 
-`active_but` non-`none` while `over_but` names a different button proves (2);
-`over_but=none` on a button you did click proves (1). Reproduce once — add a
-modifier, then try to add a second — and the log names the culprit.
+`ui_but_find_mouse_over()` finds nothing where the user visibly clicks a button,
+while the nav-bar region keeps hit-testing fine. The build-52 hypotheses are both
+disproven by this line: no stale active button exists (`active_but=none`), and
+hover activation is irrelevant because the direct hit test itself misses. Draw
+activity continued after the tab switch (39 `make_drawable` calls before the dead
+click), so blocks were rebuilt -- and the hit test still misses. The input layer,
+the GHOST DOWN/UP pairing, dispatch and the repo's own patches (v27's textedit
+guards only skip a string overwrite; the wm.cc edit is an allocation fix) are all
+ruled out.
+
+That leaves exactly three mechanisms inside `ui_but_find_mouse_over_ex`:
+
+1. `ui_region_contains_point_px()` rejects the point via the View2D mask/scroller
+   test (the winrct test cannot fail for a dispatched event);
+2. `region->runtime->uiblocks` is empty -- layout freed blocks and never rebuilt;
+3. blocks exist but `block->winmat` maps the click outside every button -- the
+   matrix snapshot was captured under a wrong viewport (the popup's?).
+
+`fix_input_v53.py` replaces the b52 probe with one that decides this in a single
+repro: on any press that hits no button it dumps winrct, the v2d mask, the
+local-space click, the block count, and per block both the block-space and
+window-space rects (`brect` vs `wrect` -- garbage transform is visible at a
+glance), plus a MOUSEMOVE counter for hover-delivery starvation. It then
+**self-heals**: tags the region for a full rebuild and queues a synthetic
+mouse-move, so if the state is rebuildable the user loses one click instead of
+the whole panel. The 3D viewport main region has no `ui_region_handler`
+(confirmed: no b52-ui lines for any viewport click), so this cannot cause
+spurious viewport redraws. Dumps are capped at 40/session.
+
+**To close this out:** reproduce once on build-53 (add a modifier via the search
+popup, then click Add Modifier again), and read the `[b53-hit]` block. `contains=0`
+with the mask values names mechanism 1; `nblocks=0` names 2; sane blocks whose
+`wrect` excludes the click names 3. Also note whether the click *after* the dead
+one works (recovery succeeded -> the state is rebuildable, and the real fix is at
+whatever left it stale).

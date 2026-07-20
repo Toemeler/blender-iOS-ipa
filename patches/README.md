@@ -40,3 +40,8 @@ They are the human-readable form of the modifications that produce the released 
   stale UIKit `buttonMask` re-presses a button the GCMouse path already
   released. `b52-ui-click-diag` logs the UI click-routing decision
   (`active_but` / `over_but`) for every mouse press reaching `ui_region_handler`.
+- **`fix_input_v53.py`** — replaces the b52 click probe with a decisive one: on a
+  press that hits no button, dump winrct, v2d mask, block list with block-space
+  and window-space rects, and a MOUSEMOVE counter — distinguishing mask-reject vs
+  empty-block-list vs corrupt-winmat in one repro — then tag the region for a full
+  rebuild plus a synthetic mouse-move so the panel recovers after one lost click.
