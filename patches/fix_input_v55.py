@@ -99,21 +99,19 @@ static CGPoint g_ios_lmb_up_pos = {0.0, 0.0};
 """)
 
 # --- 2. emitPointerButton: stamp time+pos of every LEFT UP -------------------
-# Anchor is the build-49 budget-arm block -- the current text of the flag
-# section inside emitPointerButton, unique in the file.
+# NOTE (first attempt failed in CI with 'anchor found 0x'): the flag lines and
+# the build-49 block are NOT contiguous -- fix_input_v50.py splices its
+# kind==2 middle-button intercept between them (b50-button-intercept anchors
+# on the bare flag lines and appends the intercept). Anchor instead on the
+# build-49 block alone, which only fix_input_v49.py writes and nothing later
+# touches; it is unique in the file.
 edit(W, "b55-up-stamp",
-     """  g_ios_ptr_kind_down[kind] = down ? true : false;
-  g_ios_pointer_button_down = g_ios_ptr_kind_down[0] || g_ios_ptr_kind_down[1] ||
-                              g_ios_ptr_kind_down[2];
-  if (down && kind != 0) {
+     """  if (down && kind != 0) {
     g_ios_poll_tick = 0;      /* build-49 */
     g_ios_gc_travel = 0.0;
   }
 """,
-     """  g_ios_ptr_kind_down[kind] = down ? true : false;
-  g_ios_pointer_button_down = g_ios_ptr_kind_down[0] || g_ios_ptr_kind_down[1] ||
-                              g_ios_ptr_kind_down[2];
-  if (down && kind != 0) {
+     """  if (down && kind != 0) {
     g_ios_poll_tick = 0;      /* build-49 */
     g_ios_gc_travel = 0.0;
   }
