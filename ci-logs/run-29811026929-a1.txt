@@ -1,0 +1,43 @@
+== RUN 29811026929 attempt 1 on 15.7.7 / Xcode 16.4 Build version 16F6  ==
+
+===== update.log (tail) =====
+git lfs install --skip-repo
+Git LFS initialized.
+
+Configuring Precompiled Libraries
+=================================
+
+Detected platform     : macos
+Detected architecture : arm64
+
+* Enabling precompiled libraries at lib/macos_arm64
+* Enabling precompiled libraries at lib/ios_arm64
+
+Updating Libraries
+==================
+
+* Skipping lib/linux_x64
+* Updating lib/macos_arm64 ...
+GIT_LFS_SKIP_SMUDGE=1 git submodule update --init --progress lib/macos_arm64
+Submodule 'lib/macos_arm64' (https://projects.blender.org/blender/lib-macos_arm64.git) registered for path 'lib/macos_arm64'
+fatal: could not get a repository handle for submodule 'lib/macos_arm64'
+* Skipping lib/windows_x64
+* Skipping lib/windows_arm64
+* Updating lib/ios_arm64 ...
+GIT_LFS_SKIP_SMUDGE=1 git submodule update --init --progress lib/ios_arm64
+Submodule 'lib/ios_arm64' (https://projects.blender.org/blender/lib-ios_arm64.git) registered for path 'lib/ios_arm64'
+fatal: could not get a repository handle for submodule 'lib/ios_arm64'
+
+Update finished with the following messages
+===========================================
+
+Error updating Git submodule lib/macos_arm64
+Error updating Git submodule lib/ios_arm64
+
+===== configure.log (tail) =====
+
+===== build.log error lines =====
+
+===== build.log (tail) =====
+
+===== CMakeError.log (tail) =====
